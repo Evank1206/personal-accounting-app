@@ -13,26 +13,31 @@
 </head>
 
 <body>
+    <!-- MAIN CONTAINER INCLUDES ALL -->
     <div class="container">
+        <!-- HEADER SECTION WHICH HAS INPUT -->
         <div class="partOne bg-success text-center">
-        <!-- header part -->
+        <!-- TITLE part -->
         <div class="w-100">
             <div class="card-body">
                 <h5 class="card-title">Available Budget in Month:</h5>
-                <div class="card-total-amount">+00000000000</div>
+                <div class="card-total-amount">
+                    <!-- +00000000000 -->
+                </div>
             </div>
         </div>
         <!-- INCOME part -->
         <div class="container bg-info w-50 mt-4 p-3">
             <div class="text">
                 <div class="float-left">INCOME</div>
-                <div class="income-value float-right">+ 4,300.00
+                <div class="income-value float-right">+ 
+                    4,300.00
                     <div class="budget__income--percentage float-right pl-4">10%</div>
                 </div>
                 <div class="budget__income--percentage">&nbsp;</div>
             </div>
         </div>
-        <!-- expenses part -->
+        <!-- EXPENSESS part -->
         <div class="container bg-danger w-50 mt-3 p-3 ">
             <div class="text">
                 <div class="float-left">EXPENSES</div>
@@ -42,13 +47,13 @@
                 <div class="budget__income--percentage">&nbsp;</div>
             </div>
         </div>
-        <!-- action -->
+        <!-- INPUTS part -->
         <div class="action mt-4 pt-4 pb-4">
             <div class="add">
                 <div class="add__container">
                     <select class="add__type pr-2">
-                        <option value="inc">+</option>
-                        <option value="exp">-</option>
+                        <option value="increment">+</option>
+                        <option value="decrement">-</option>
                     </select>
                     <input type="text" class="add__description" placeholder="Add description">
                     <input type="number" class="add__value" placeholder="Value">
@@ -59,11 +64,13 @@
             </div>
         </div>
         </div>
-        <!-- body -->
-        <div class="container clearfix mt-4">
-            <div class="income w-50 float-left">
+        <!-- BODY SECTION OF APP MAIN "DIV"-->
+        <div class="container clearfix mt-4 bg-primary">
+            <!-- body's income part -->
+            <div class="income w-50 float-left bg-info">
+                <!-- tile -->
                 <h2 class="icome__title">Income</h2>
-                
+                <!-- list container -->
                 <div class="income__list">
                    
                     <!--
@@ -90,12 +97,10 @@
                     
                 </div>
             </div>
-            
-            
-            
-            <div class="expenses w-50 float-right">
+            <!-- boydy's expenses section -->
+            <div class="expenses w-50 float-right bg-danger">
                 <h2 class="expenses__title">Expenses</h2>
-                
+                <!-- list container -->
                 <div class="expenses__list">
                    
                     <!--
@@ -128,6 +133,7 @@
        
     </div>
 
+    <script src="./app.js"></script>
 </body>
 
 </html>
