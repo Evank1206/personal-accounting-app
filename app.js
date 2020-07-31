@@ -1,5 +1,29 @@
+// var shortCut = document.querySelector();
 var uiController = (function () {
-
+    // HTML class nerudiig neg gazar bairluulah ni daraa class ner uurchlugdhud zasvarlah hylbar bolomjtoi tiimees tedgeer grab hiij bgaa class nernuudiig neg Object dotor hadglaj ugvel hylbar bolno
+    var DOMclass = {
+        add_type:".add__type",
+        add__description:".add__description",
+        add__value: ".add__value",
+        item__description: ".item__description",
+        item__value: ".item__value",
+        add__btn: ".add__btn",
+    }
+    // var x = "hello";
+    // public tohirgooo
+    return {
+        inputValue: function(){
+            return {
+                 // grab values from inputs
+                inc_OR_exp: document.querySelector(DOMclass.add_type).value,
+                description: document.querySelector(DOMclass.add__description).value,
+                valuue: document.querySelector(DOMclass.add__value).value,
+            }
+        },
+        getDOMclassFunc: function(){
+            return DOMclass; // OBJECT -g butsaah ni
+        }
+    }
 })();
 
 var financeController = (function () {
@@ -7,19 +31,18 @@ var financeController = (function () {
 })();
 
 var othersController = (function (ui, fin) {
+    // shortCut
+    var DOM = ui.getDOMclassFunc();
     var enterFunc = function () {
-        //      grab values from inputs
-        var inc_Dic = document.querySelector(".add__type").value;
-        // console.log(inc_Dic);
-        var description = document.querySelector(".add__description").value;
-        // console.log(description);
-        var valuue = document.querySelector(".add__value").value;
-        // console.log(valuue);
-        document.querySelector(".card-total-amount").append(valuue);
+        var x = ui.inputValue()
+        console.log(x);
+
+        document.querySelector(DOM.item__description).append(x.description);
+        document.querySelector(DOM.item__value).append(x.valuue);
     };
 
     // WHEN CLICK THE BUTTON
-    document.querySelector(".add__btn").addEventListener("click", function () {
+    document.querySelector(DOM.add__btn).addEventListener("click", function () {
         enterFunc();
     });
     // WHEN PRESS ENTER ON KEYBOARD
