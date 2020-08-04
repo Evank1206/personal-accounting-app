@@ -1,5 +1,5 @@
-// var shortCut = document.querySelector();
-var uiController = (function () {
+// 1. USER CONTROLLER
+var userController = (function () {
     // HTML class nerudiig neg gazar bairluulah ni daraa class ner uurchlugdhud zasvarlah hylbar bolomjtoi tiimees tedgeer grab hiij bgaa class nernuudiig neg Object dotor hadglaj ugvel hylbar bolno
     var DOMclass = {
         add_type: ".add__type",
@@ -25,16 +25,63 @@ var uiController = (function () {
         }
     }
 })();
-
-var financeController = (function () {
-
+// 2. CALCULATION CONTROLLER
+var calculationController = (function () {
+    // private function
+    var Income = function (id, description, value) {
+        this.id = id;
+        this.description = description;
+        this.value = value;
+    }
+    // private function
+    var Expenses = function (id, description, value) {
+        this.id = id;
+        this.description = description;
+        this.value = value;
+    };
+    // var i1 = new Income(1, "from uber this month", 2500);
+    // var e1 = new Expenses(1, "buy bicycle", 100);
+    // var inc = [];
+    // var  exp = [];
+    // arr.push(i1);
+    // arr.push(e1);
+    // private data
+    var dataObj = {
+        items: {
+            inc: [],
+            exp: []
+        },
+        totalAmout: {
+            inc: 0,
+            exp: 0
+        }
+    }
+    // public service
+    return {
+        // grabbing value from input 
+        addItem: function (type, description, value) {
+            var item;
+            // defense on type it would toggle between income or expenses
+            if (type === "inc") {
+                item = new Income(id, desc, value);
+            } else {
+                item = new Expenses(id, desc, value);
+            }
+            dataObj.items[type].push(item);
+        }
+    }
 })();
 
-var othersController = (function (ui, fin) {
+// 3. CONNECTION CONTROLLER
+var connectionController = (function (ui, cal) {
 
     var enterFunc = function () {
+        // get ui value
         var x = ui.inputValue()
         console.log(x);
+        // save value in calculation controller
+        console.log(cal.addItem(x.inc_OR_exp, x.description, x.value));
+        // display calculation
         // түр commetted out
         // document.querySelector(DOM.item__description).append(x.description);
         // document.querySelector(DOM.item__value).append(x.valuue);
@@ -63,6 +110,6 @@ var othersController = (function (ui, fin) {
         }
     }
 
-})(uiController, financeController);
+})(userController, calculationController);
 
-othersController.setUp();
+connectionController.setUp();
