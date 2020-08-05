@@ -59,16 +59,24 @@ var calculationController = (function () {
     // public service
     return {
         // grabbing value from input 
-        addItem: function (type, description, value) {
+        addItem: function (type, desc, val) {
             var item;
+            var id;
+            if(dataObj.items[type].length === 0) id = 1;
+            else id = dataObj.items[type][dataObj.items[type].length - 1].id + 1;
+
             // defense on type it would toggle between income or expenses
             if (type === "inc") {
-                item = new Income(id, desc, value);
+                item = new Income(id, desc, val);
             } else {
-                item = new Expenses(id, desc, value);
+                item = new Expenses(id, desc, val);
             }
             dataObj.items[type].push(item);
+        },
+        dataaa: function(){
+            return dataObj;
         }
+
     }
 })();
 
@@ -80,7 +88,7 @@ var connectionController = (function (ui, cal) {
         var x = ui.inputValue()
         console.log(x);
         // save value in calculation controller
-        console.log(cal.addItem(x.inc_OR_exp, x.description, x.value));
+        console.log(cal.addItem(x.inc_OR_exp, x.description, x.valuue));
         // display calculation
         // түр commetted out
         // document.querySelector(DOM.item__description).append(x.description);
