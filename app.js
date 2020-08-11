@@ -8,7 +8,7 @@ var userController = (function () {
         item__description: ".item__description",
         item__value: ".item__value",
         add__btn: ".add__btn",
-    }
+    };
     // var x = "hello";
     // public service/tohirgooo
     return {
@@ -22,6 +22,28 @@ var userController = (function () {
         },
         getDOMclassFunc: function () {
             return DOMclass; // OBJECT -g butsaah ni
+        },
+        // html list ttei ajillah function
+        addHtmlList: function (item, type) {
+            // orlogo zarlagiin list boloh html -g beltne
+            var listOfItems;
+            var list;
+            if (type === "inc") {
+                list = ".income__list";
+                listOfItems = '<div class="item clearfix" id="income-%ID%"><div class="item_description">$DESCRIPTION$</div><div class="right clearfix"><div class="item_value">$VALUE$</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+                // listOfItems = '<li class="list-group-item" id="income-%ID%"><div class="item__description float-left">"$DESCRIPTION$"</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">+ "$VALUE$"</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li>'
+            } else {
+                list = ".expenses__list";
+                listOfItems = '<div class="item clearfix" id="expense-%ID%"><div class="item_description">$DESCRIPTION$</div><div class="right clearfix"><div class="item_value">$VALUE$</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+                // listOfItems = '<li class="list-group-item" id="expense-%ID%"><div class="item__description float-left">"$DESCRIPTION$"</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">-"$VALUE$"</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li>'
+            }
+            // ter html utguudiig solij ugnu
+           listOfItems = listOfItems.replace("%ID%", item.id);
+           listOfItems = listOfItems.replace("$DESCRIPTION$", item.desc);
+           listOfItems = listOfItems.replace("$VALUE$", item.val);
+            // delegtsen deer gargana
+            document.querySelector(list).insertAdjacentHTML("beforeend", listOfItems);
+
         }
     }
 })();
@@ -62,7 +84,7 @@ var calculationController = (function () {
         addItem: function (type, desc, val) {
             var item;
             var id;
-            if(dataObj.items[type].length === 0) id = 1;
+            if (dataObj.items[type].length === 0) id = 1;
             else id = dataObj.items[type][dataObj.items[type].length - 1].id + 1;
 
             // defense on type it would toggle between income or expenses
@@ -72,8 +94,9 @@ var calculationController = (function () {
                 item = new Expenses(id, desc, val);
             }
             dataObj.items[type].push(item);
+            return item;
         },
-        dataaa: function(){
+        dataaa: function () {
             return dataObj;
         }
 
@@ -84,15 +107,15 @@ var calculationController = (function () {
 var connectionController = (function (ui, cal) {
 
     var enterFunc = function () {
-        // get ui value
+        // 1. get ui value
         var x = ui.inputValue()
-        console.log(x);
-        // save value in calculation controller
-        console.log(cal.addItem(x.inc_OR_exp, x.description, x.valuue));
-        // display calculation
-        // түр commetted out
-        // document.querySelector(DOM.item__description).append(x.description);
-        // document.querySelector(DOM.item__value).append(x.valuue);
+        console.log(x.inc_OR_exp);
+        // 2. save value in calculation controller
+        var y = cal.addItem(x.inc_OR_exp, x.description, x.valuue)
+        console.log(y);
+
+        // 3. display user's entered data
+        ui.addHtmlList(y, x.inc_OR_exp)
     };
     var setup_EventListener_Funct = function () {
         // shortCut
