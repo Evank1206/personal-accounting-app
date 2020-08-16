@@ -30,17 +30,20 @@ var userController = (function () {
             var list;
             if (type === "inc") {
                 list = ".income__list";
-                listOfItems = '<div class="item clearfix" id="income-%ID%"><div class="item_description">$DESCRIPTION$</div><div class="right clearfix"><div class="item_value">$VALUE$</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
-                // listOfItems = '<li class="list-group-item" id="income-%ID%"><div class="item__description float-left">"$DESCRIPTION$"</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">+ "$VALUE$"</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li>'
+                // listOfItems = '<div class="item clearfix" id="income-%ID%"><div class="item_description">$DESCRIPTION$</div><div class="right clearfix"><div class="item_value">$VALUE$</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+                listOfItems = '<div class="list-group-item" id="income-%ID%"><li><div class="item__description float-left">"$DESCRIPTION$"</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">+ "$VALUE$"</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li></div>'
             } else {
                 list = ".expenses__list";
-                listOfItems = '<div class="item clearfix" id="expense-%ID%"><div class="item_description">$DESCRIPTION$</div><div class="right clearfix"><div class="item_value">$VALUE$</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
-                // listOfItems = '<li class="list-group-item" id="expense-%ID%"><div class="item__description float-left">"$DESCRIPTION$"</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">-"$VALUE$"</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li>'
+                // listOfItems = '<div class="item clearfix" id="expense-%ID%"><div class="item_description">$DESCRIPTION$</div><div class="right clearfix"><div class="item_value">$VALUE$</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+                listOfItems = '<div class="list-group-item" id="expense-%ID%"><li><div class="item__description float-left">"$DESCRIPTION$"</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">-"$VALUE$"</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li></div>'
             }
             // ter html utguudiig solij ugnu
            listOfItems = listOfItems.replace("%ID%", item.id);
-           listOfItems = listOfItems.replace("$DESCRIPTION$", item.desc);
-           listOfItems = listOfItems.replace("$VALUE$", item.val);
+           listOfItems = listOfItems.replace("$DESCRIPTION$", item.description);
+           console.log(item.id);
+           console.log(item.description);
+           console.log(item.value);
+           listOfItems = listOfItems.replace("$VALUE$", item.value);
             // delegtsen deer gargana
             document.querySelector(list).insertAdjacentHTML("beforeend", listOfItems);
 
@@ -81,7 +84,7 @@ var calculationController = (function () {
     // public service
     return {
         // grabbing value from input 
-        addItem: function (type, desc, val) {
+        addItem: function (type, descrip, valu) {
             var item;
             var id;
             if (dataObj.items[type].length === 0) id = 1;
@@ -89,9 +92,9 @@ var calculationController = (function () {
 
             // defense on type it would toggle between income or expenses
             if (type === "inc") {
-                item = new Income(id, desc, val);
+                item = new Income(id, descrip, valu);
             } else {
-                item = new Expenses(id, desc, val);
+                item = new Expenses(id, descrip, valu);
             }
             dataObj.items[type].push(item);
             return item;
@@ -109,7 +112,9 @@ var connectionController = (function (ui, cal) {
     var enterFunc = function () {
         // 1. get ui value
         var x = ui.inputValue()
-        console.log(x.inc_OR_exp);
+        // console.log(x.inc_OR_exp);
+        // console.log(x.description);
+        // console.log(x.valuue);
         // 2. save value in calculation controller
         var y = cal.addItem(x.inc_OR_exp, x.description, x.valuue)
         console.log(y);
