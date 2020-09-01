@@ -8,6 +8,8 @@ var userController = (function () {
         item__description: ".item__description",
         item__value: ".item__value",
         add__btn: ".add__btn",
+        income__list: ".income__list",
+        expenses__list: ".expenses__list"
     };
     // var x = "hello";
     // public service/tohirgooo
@@ -28,25 +30,45 @@ var userController = (function () {
             // orlogo zarlagiin list boloh html -g beltne
             var listOfItems;
             var list;
+            var totalxxx = item.value;
             if (type === "inc") {
-                list = ".income__list";
-                // listOfItems = '<div class="item clearfix" id="income-%ID%"><div class="item_description">$DESCRIPTION$</div><div class="right clearfix"><div class="item_value">$VALUE$</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+                list = DOMclass.income__list;
                 listOfItems = '<div class="list-group-item" id="income-%ID%"><li><div class="item__description float-left">"$DESCRIPTION$"</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">+ "$VALUE$"</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li></div>'
+                totalxxx++;
             } else {
-                list = ".expenses__list";
-                // listOfItems = '<div class="item clearfix" id="expense-%ID%"><div class="item_description">$DESCRIPTION$</div><div class="right clearfix"><div class="item_value">$VALUE$</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+                list = DOMclass.expenses__list;
                 listOfItems = '<div class="list-group-item" id="expense-%ID%"><li><div class="item__description float-left">"$DESCRIPTION$"</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">-"$VALUE$"</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li></div>'
             }
             // ter html utguudiig solij ugnu
-           listOfItems = listOfItems.replace("%ID%", item.id);
-           listOfItems = listOfItems.replace("$DESCRIPTION$", item.description);
-           console.log(item.id);
-           console.log(item.description);
-           console.log(item.value);
-           listOfItems = listOfItems.replace("$VALUE$", item.value);
-            // delegtsen deer gargana
-            document.querySelector(list).insertAdjacentHTML("beforeend", listOfItems);
+            listOfItems = listOfItems.replace("%ID%", item.id);
+            listOfItems = listOfItems.replace("$DESCRIPTION$", item.description);
+            listOfItems = listOfItems.replace("$VALUE$", item.value);
+            //    console.log(item.id);
+            //    console.log(item.description);
+            //    console.log(item.value);
+            // console.log(item.value);
 
+            // display to DOM
+            document.querySelector(list).insertAdjacentHTML("beforeend", listOfItems);
+            document.querySelector(".card-total-amount").append(totalxxx);
+
+        },
+        // clear scrypts from input
+        clearInput: function () {
+            // collect all inputs value to list variable
+            var inputField = document.querySelectorAll(DOMclass.add__description + ", " + DOMclass.add__value);
+            // console.log(inputField);
+            // convert that list variables into array 
+            var inputArr = Array.prototype.slice.call(inputField);
+            // console.log(inputArr);
+            // loop through inputs and changes to empty! // string 
+            // for (var i = 0; i < inputArr.length; i++) {
+            //     inputArr[i].value = '';
+            // }
+            // OR
+            inputArr.forEach(function(el, index, array){
+                el.value = '';
+            })
         }
     }
 })();
@@ -120,7 +142,9 @@ var connectionController = (function (ui, cal) {
         console.log(y);
 
         // 3. display user's entered data
-        ui.addHtmlList(y, x.inc_OR_exp)
+        ui.addHtmlList(y, x.inc_OR_exp);
+        // clear input function calls here
+        ui.clearInput();
     };
     var setup_EventListener_Funct = function () {
         // shortCut
