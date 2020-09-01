@@ -68,7 +68,9 @@ var userController = (function () {
             // OR
             inputArr.forEach(function(el, index, array){
                 el.value = '';
-            })
+            });
+            // focus гэдэг element нь cursor -н байрлалыг зааж өгөх бөгөөд, бидий хувьд description дээр cursor oo аваачих учир discription ний location -г зааж өгнө.
+            inputArr[0].focus();
         }
     }
 })();
