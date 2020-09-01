@@ -66,7 +66,7 @@ var userController = (function () {
             //     inputArr[i].value = '';
             // }
             // OR
-            inputArr.forEach(function(el, index, array){
+            inputArr.forEach(function (el, index, array) {
                 el.value = '';
             });
             // focus гэдэг element нь cursor -н байрлалыг зааж өгөх бөгөөд, бидий хувьд description дээр cursor oo аваачих учир discription ний location -г зааж өгнө.
@@ -137,16 +137,18 @@ var connectionController = (function (ui, cal) {
         // 1. get ui value
         var x = ui.inputValue()
         // console.log(x.inc_OR_exp);
-        // console.log(x.description);
-        // console.log(x.valuue);
-        // 2. save value in calculation controller
-        var y = cal.addItem(x.inc_OR_exp, x.description, x.valuue)
-        console.log(y);
-
-        // 3. display user's entered data
-        ui.addHtmlList(y, x.inc_OR_exp);
-        // clear input function calls here
-        ui.clearInput();
+        // console.log(x.description === "");
+        // console.log(x.valuue === "");
+        // algorithem for хэрвээ 2 input хоосон бол юу ч дэлгэцрүү гаргахгүй
+        if (x.description && x.valuue !== '') {
+            // 2. save value in calculation controller
+            var y = cal.addItem(x.inc_OR_exp, x.description, x.valuue)
+            console.log(y);
+            // 3. display user's entered data
+            ui.addHtmlList(y, x.inc_OR_exp);
+            // clear input function calls here
+            ui.clearInput();
+        }
     };
     var setup_EventListener_Funct = function () {
         // shortCut
