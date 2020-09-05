@@ -19,7 +19,7 @@ var userController = (function () {
                 // grab values from inputs
                 inc_OR_exp: document.querySelector(DOMclass.add_type).value,
                 description: document.querySelector(DOMclass.add__description).value,
-                valuue: document.querySelector(DOMclass.add__value).value,
+                valuue: parseInt(document.querySelector(DOMclass.add__value).value), // added to value parseInt so it's convert string to number
             }
         },
         getDOMclassFunc: function () {
@@ -30,11 +30,10 @@ var userController = (function () {
             // orlogo zarlagiin list boloh html -g beltne
             var listOfItems;
             var list;
-            var totalxxx = item.value;
+            // var totalxxx = item.value;
             if (type === "inc") {
                 list = DOMclass.income__list;
                 listOfItems = '<div class="list-group-item" id="income-%ID%"><li><div class="item__description float-left">"$DESCRIPTION$"</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">+ "$VALUE$"</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li></div>'
-                totalxxx++;
             } else {
                 list = DOMclass.expenses__list;
                 listOfItems = '<div class="list-group-item" id="expense-%ID%"><li><div class="item__description float-left">"$DESCRIPTION$"</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">-"$VALUE$"</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li></div>'
@@ -50,7 +49,7 @@ var userController = (function () {
 
             // display to DOM
             document.querySelector(list).insertAdjacentHTML("beforeend", listOfItems);
-            document.querySelector(".card-total-amount").append(totalxxx);
+            // document.querySelector(".income-value").append(totalxxx);
 
         },
         // clear scrypts from input
@@ -88,6 +87,14 @@ var calculationController = (function () {
         this.description = description;
         this.value = value;
     };
+    // function that calulates and adds exp or inc
+    calulateTotalIncome = function (type) {
+        var sum = 0;
+        dataObj.items[type].forEach(function (el) {
+            sum = sum + el;
+        });
+        dataObj.totalAmout[type] = sum;
+    }
     // var i1 = new Income(1, "from uber this month", 2500);
     // var e1 = new Expenses(1, "buy bicycle", 100);
     // var inc = [];
@@ -103,10 +110,28 @@ var calculationController = (function () {
         totalAmout: {
             inc: 0,
             exp: 0
-        }
+        },
+        incomeInvoice: 0,
+        percent: 0,
     }
     // public service
     return {
+        // income or expenses add them together
+        ex_in_Add: function () {
+            calulateTotalIncome("inc");
+            calulateTotalIncome("exp");
+            // total income invoice
+            dataObj.incomeInvoice = dataObj.totalAmout.inc - dataObj.totalAmout.exp;
+            // calcumlate percentage
+            dataObj.percent = Math.round(dataObj.totalAmout.exp / dataObj.totalAmout.inc) * 100;
+        },
+        // calculate pure income
+        takeAllEstimation: function () {
+            return {
+
+            }
+        },
+
         // grabbing value from input 
         addItem: function (type, descrip, valu) {
             var item;
@@ -126,7 +151,6 @@ var calculationController = (function () {
         dataaa: function () {
             return dataObj;
         }
-
     }
 })();
 
@@ -135,7 +159,7 @@ var connectionController = (function (ui, cal) {
 
     var enterFunc = function () {
         // 1. get ui value
-        var x = ui.inputValue()
+        var x = ui.inputValue();
         // console.log(x.inc_OR_exp);
         // console.log(x.description === "");
         // console.log(x.valuue === "");
@@ -143,12 +167,16 @@ var connectionController = (function (ui, cal) {
         if (x.description && x.valuue !== '') {
             // 2. save value in calculation controller
             var y = cal.addItem(x.inc_OR_exp, x.description, x.valuue)
-            console.log(y);
+            // console.log(y);
             // 3. display user's entered data
             ui.addHtmlList(y, x.inc_OR_exp);
             // clear input function calls here
             ui.clearInput();
         }
+        // 3. add expenses & incomes values function  
+        cal.ex_in_Add(x.inc_OR_exp);
+        // 4. calculate pure income from expense and income
+        cal.pureIncome();
     };
     var setup_EventListener_Funct = function () {
         // shortCut
