@@ -91,7 +91,7 @@ var calculationController = (function () {
     calulateTotalIncome = function (type) {
         var sum = 0;
         dataObj.items[type].forEach(function (el) {
-            sum = sum + el;
+            sum = sum + el.value;
         });
         dataObj.totalAmout[type] = sum;
     }
@@ -123,12 +123,15 @@ var calculationController = (function () {
             // total income invoice
             dataObj.incomeInvoice = dataObj.totalAmout.inc - dataObj.totalAmout.exp;
             // calcumlate percentage
-            dataObj.percent = Math.round(dataObj.totalAmout.exp / dataObj.totalAmout.inc) * 100;
+            dataObj.percent = Math.round((dataObj.totalAmout.exp / dataObj.totalAmout.inc) * 100);
         },
         // calculate pure income
         takeAllEstimation: function () {
             return {
-
+               total : dataObj.incomeInvoice,
+               percenty : dataObj.percent,
+               totalINC : dataObj.totalAmout.inc,
+               totalEXP : dataObj.totalAmout.exp 
             }
         },
 
@@ -176,7 +179,8 @@ var connectionController = (function (ui, cal) {
         // 3. add expenses & incomes values function  
         cal.ex_in_Add(x.inc_OR_exp);
         // 4. calculate pure income from expense and income
-        cal.pureIncome();
+        var logit = cal.takeAllEstimation();
+        console.log(logit);
     };
     var setup_EventListener_Funct = function () {
         // shortCut
