@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="./css/style.css"/> -->
+    <link rel="stylesheet" href="./css/style.css"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css">
@@ -17,52 +17,52 @@
     <div class="container">
         <!-- HEADER SECTION WHICH HAS INPUT -->
         <div class="partOne bg-success text-center">
-        <!-- TITLE part -->
-        <div class="w-100">
-            <div class="card-body">
-                <h5 class="card-title">Available Budget in Month:</h5>
-                <div class="card-total-amount">
-                    <!-- +00000000000  -->
+            <!-- TITLE part -->
+            <div class="w-100">
+                <div class="card-body">
+                    <h5 class="card-title">Available Budget in Month:</h5>
+                    <div class="card-total-amount">
+                        <!-- +00000000000  -->
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- INCOME part -->
-        <div class="container bg-info w-50 mt-4 p-3">
-            <div class="text">
-                <div class="float-left">INCOME</div>
-                <div class="income-value float-right">+ 
-                    4,300.00
-                    <div class="budget__income--percentage float-right pl-4">10%</div>
+            <!-- INCOME part -->
+            <div class="container bg-info w-50 mt-4 p-3">
+                <div class="text">
+                    <div class="float-left">INCOME</div>
+                    <div class="income-value float-right income-balance">+
+                        4,300.00
+                        <!-- <div class="budget__income--percentage float-right pl-4"></div> -->
+                    </div>
+                    <div class="budget__income--percentage">&nbsp;</div>
                 </div>
-                <div class="budget__income--percentage">&nbsp;</div>
             </div>
-        </div>
-        <!-- EXPENSESS part -->
-        <div class="container bg-danger w-50 mt-3 p-3 ">
-            <div class="text">
-                <div class="float-left">EXPENSES</div>
-                <div class="income-value float-right">+ 4,300.00
-                    <div class="income-percentage float-right pl-4">10%</div>
+            <!-- EXPENSESS part -->
+            <div class="container bg-danger w-50 mt-3 p-3">
+                <div class="text">
+                    <div class="float-left">EXPENSES</div>
+                    <div class="income-value float-right expense-balance">+ 4,300.00</div>
+                        <div class="income-percentage pl-4">10%</div>
+                    <!-- </div> -->
+                    <!-- <div class="budget__income--percentage">&nbsp;</div> -->
                 </div>
-                <div class="budget__income--percentage">&nbsp;</div>
             </div>
-        </div>
-        <!-- INPUTS part -->
-        <div class="action mt-4 pt-4 pb-4">
-            <div class="add">
-                <div class="add__container">
-                    <select class="add__type pr-2">
-                        <option value="inc">+</option>
-                        <option value="exp">-</option>
-                    </select>
-                    <input type="text" class="add__description" placeholder="income description">
-                    <input type="number" class="add__value" placeholder="amount">
-                    <button class="add__btn"><i class="ion-ios-checkmark-outline"></i></button>
-                    <!-- <i class="ion-ios-checkmark-outline"></i> -->
+            <!-- INPUTS part -->
+            <div class="action mt-4 pt-4 pb-4">
+                <div class="add">
+                    <div class="add__container">
+                        <select class="add__type pr-2">
+                            <option value="inc">+</option>
+                            <option value="exp">-</option>
+                        </select>
+                        <input type="text" class="add__description" placeholder="income description">
+                        <input type="number" class="add__value" placeholder="amount">
+                        <button class="add__btn"><i class="ion-ios-checkmark-outline"></i></button>
+                        <!-- <i class="ion-ios-checkmark-outline"></i> -->
 
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
         <!-- BODY SECTION OF APP MAIN "DIV"-->
         <div class="container clearfix mt-4 bg-primary">
@@ -72,7 +72,7 @@
                 <h2 class="icome__title">Income</h2>
                 <!-- list container -->
                 <div class="income__list">
-                   
+
                     <!-- /////start//// -->
                     <!-- <div class="item clearfix" id="income-0">
                         <div class="item__description">Salary</div>
@@ -85,7 +85,7 @@
                     </div> -->
                     <!-- ////////////////////////////////////////////////////////////////////////////////// -->
                     <!-- <ul class="list-group income"> -->
-                        <!-- <li class="list-group-item">
+                    <!-- <li class="list-group-item">
                             <div class="item__description float-left">Sold car</div>
                             <div class="right clearfix float-right">
                                 <div class="item__value float-left pr-4">+ 1,500.00</div>
@@ -94,10 +94,10 @@
                                 </div>
                             </div>
                         </li> -->
-                      <!-- </ul> -->
-                      <!-- /////////////////////////////////////////////////////////////////////////////////// -->
-                   <!-- /////end//// -->
-                    
+                    <!-- </ul> -->
+                    <!-- /////////////////////////////////////////////////////////////////////////////////// -->
+                    <!-- /////end//// -->
+
                 </div>
             </div>
             <!-- boydy's expenses section -->
@@ -107,7 +107,7 @@
                 <div class="expenses__list">
 
                     <!-- <ul class="list-group expenses"> -->
-                        <!-- <li class="list-group-item">
+                    <!-- <li class="list-group-item">
                             <div class="item__description float-left">Sold car</div>
                             <div class="right clearfix float-right">
                                 <div class="item__value float-left pr-4">+ 1,500.00</div>
@@ -116,10 +116,10 @@
                                 </div>
                             </div>
                         </li> -->
-                      <!-- </ul> -->
-                   
+                    <!-- </ul> -->
+
                     <!-- /////start//// -->
-                    
+
                     <!-- <div class="item clearfix" id="expense-0">
                         <div class="item__description">Apartment rent</div>
                         <div class="right clearfix">
@@ -130,12 +130,12 @@
                             </div>
                         </div>
                     </div> -->
-                   
+
                     <!-- /////end//// -->
                 </div>
             </div>
         </div>
-       
+
     </div>
 
     <script src="./app.js"></script>

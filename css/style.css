@@ -1,3 +1,7 @@
 h1{
     color: blue;
 }
+.card-total-amount{
+    font-size: 19px;
+    font-weight: bold;
+}

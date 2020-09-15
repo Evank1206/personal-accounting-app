@@ -9,7 +9,12 @@ var userController = (function () {
         item__value: ".item__value",
         add__btn: ".add__btn",
         income__list: ".income__list",
-        expenses__list: ".expenses__list"
+        expenses__list: ".expenses__list",
+        total__amount: ".card-total-amount",
+        income__balance: ".income-balance",
+        expense__balance: ".expense-balance",
+        income__percentage: ".income-percentage",
+        delete__btn: ".item__delete--btn"
     };
     // var x = "hello";
     // public service/tohirgooo
@@ -33,10 +38,10 @@ var userController = (function () {
             // var totalxxx = item.value;
             if (type === "inc") {
                 list = DOMclass.income__list;
-                listOfItems = '<div class="list-group-item" id="income-%ID%"><li><div class="item__description float-left">"$DESCRIPTION$"</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">+ "$VALUE$"</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li></div>'
+                listOfItems = '<div class="list-group-item" id="income-%ID%"><li><div class="item__description float-left">$DESCRIPTION$</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">+ $VALUE$</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li></div>'
             } else {
                 list = DOMclass.expenses__list;
-                listOfItems = '<div class="list-group-item" id="expense-%ID%"><li><div class="item__description float-left">"$DESCRIPTION$"</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">-"$VALUE$"</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li></div>'
+                listOfItems = '<div class="list-group-item" id="expense-%ID%"><li><div class="item__description float-left">$DESCRIPTION$</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">-$VALUE$</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li></div>'
             }
             // ter html utguudiig solij ugnu
             listOfItems = listOfItems.replace("%ID%", item.id);
@@ -49,7 +54,6 @@ var userController = (function () {
 
             // display to DOM
             document.querySelector(list).insertAdjacentHTML("beforeend", listOfItems);
-            // document.querySelector(".income-value").append(totalxxx);
 
         },
         // clear scrypts from input
@@ -70,6 +74,19 @@ var userController = (function () {
             });
             // focus гэдэг element нь cursor -н байрлалыг зааж өгөх бөгөөд, бидий хувьд description дээр cursor oo аваачих учир discription ний location -г зааж өгнө.
             inputArr[0].focus();
+        },
+        // show them all to display
+        displayFunction: function(allx){
+            document.querySelector(DOMclass.total__amount).textContent = allx.total;
+            document.querySelector(DOMclass.income__balance).textContent = allx.totalINC;
+            document.querySelector(DOMclass.expense__balance).textContent = allx.totalEXP;
+            // some logic to if percentage is "0" there should not be "%" mark
+            if(allx.percenty === 0){
+                document.querySelector(DOMclass.income__percentage).textContent = allx.percenty;
+            }else{
+                document.querySelector(DOMclass.income__percentage).textContent = allx.percenty + "%";
+            }
+
         }
     }
 })();
@@ -112,7 +129,7 @@ var calculationController = (function () {
             exp: 0
         },
         incomeInvoice: 0,
-        percent: 0,
+        percentx: 0,
     }
     // public service
     return {
@@ -123,15 +140,15 @@ var calculationController = (function () {
             // total income invoice
             dataObj.incomeInvoice = dataObj.totalAmout.inc - dataObj.totalAmout.exp;
             // calcumlate percentage
-            dataObj.percent = Math.round((dataObj.totalAmout.exp / dataObj.totalAmout.inc) * 100);
+            dataObj.percentx = Math.round((dataObj.totalAmout.exp / dataObj.totalAmout.inc) * 100);
         },
         // calculate pure income
         takeAllEstimation: function () {
             return {
                total : dataObj.incomeInvoice,
-               percenty : dataObj.percent,
                totalINC : dataObj.totalAmout.inc,
-               totalEXP : dataObj.totalAmout.exp 
+               totalEXP : dataObj.totalAmout.exp,
+               percenty : dataObj.percentx
             }
         },
 
@@ -180,7 +197,12 @@ var connectionController = (function (ui, cal) {
         cal.ex_in_Add(x.inc_OR_exp);
         // 4. calculate pure income from expense and income
         var logit = cal.takeAllEstimation();
-        console.log(logit);
+        // console.log(logit.total);
+        // console.log(logit.totalINC);
+        // console.log(logit.totalEXP);
+        // console.log(logit.percenty);
+        ui.displayFunction(logit);
+
     };
     var setup_EventListener_Funct = function () {
         // shortCut
