@@ -1,4 +1,4 @@
-// 1. USER CONTROLLER
+// *** 1.*** USER CONTROLLER
 var userController = (function () {
     // HTML class nerudiig neg gazar bairluulah ni daraa class ner uurchlugdhud zasvarlah hylbar bolomjtoi tiimees tedgeer grab hiij bgaa class nernuudiig neg Object dotor hadglaj ugvel hylbar bolno
     var DOMclass = {
@@ -14,7 +14,8 @@ var userController = (function () {
         income__balance: ".income-balance",
         expense__balance: ".expense-balance",
         income__percentage: ".income-percentage",
-        delete__btn: ".item__delete--btn"
+        delete__btn: ".item__delete--btn",
+        container: ".container"
     };
     // var x = "hello";
     // public service/tohirgooo
@@ -38,10 +39,10 @@ var userController = (function () {
             // var totalxxx = item.value;
             if (type === "inc") {
                 list = DOMclass.income__list;
-                listOfItems = '<div class="list-group-item" id="income-%ID%"><li><div class="item__description float-left">$DESCRIPTION$</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">+ $VALUE$</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li></div>'
+                listOfItems = '<div class="list-group-item"><li id="inc-%ID%"><div class="item__description float-left">$DESCRIPTION$</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">+ $VALUE$</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li></div>'
             } else {
                 list = DOMclass.expenses__list;
-                listOfItems = '<div class="list-group-item" id="expense-%ID%"><li><div class="item__description float-left">$DESCRIPTION$</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">-$VALUE$</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li></div>'
+                listOfItems = '<div class="list-group-item"><li id="exp-%ID%"><div class="item__description float-left">$DESCRIPTION$</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">- $VALUE$</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li></div>'
             }
             // ter html utguudiig solij ugnu
             listOfItems = listOfItems.replace("%ID%", item.id);
@@ -76,21 +77,23 @@ var userController = (function () {
             inputArr[0].focus();
         },
         // show them all to display
-        displayFunction: function(allx){
+        displayFunction: function (allx) {
             document.querySelector(DOMclass.total__amount).textContent = allx.total;
             document.querySelector(DOMclass.income__balance).textContent = allx.totalINC;
             document.querySelector(DOMclass.expense__balance).textContent = allx.totalEXP;
             // some logic to if percentage is "0" there should not be "%" mark
-            if(allx.percenty === 0){
+            if (allx.percenty === 0) {
                 document.querySelector(DOMclass.income__percentage).textContent = allx.percenty;
-            }else{
+            } else {
                 document.querySelector(DOMclass.income__percentage).textContent = allx.percenty + "%";
             }
 
-        }
+        },
+        // deleting income or expenses function here
+
     }
 })();
-// 2. CALCULATION CONTROLLER
+// *** 2. *** CALCULATION CONTROLLER
 var calculationController = (function () {
     // private function
     var Income = function (id, description, value) {
@@ -145,10 +148,22 @@ var calculationController = (function () {
         // calculate pure income
         takeAllEstimation: function () {
             return {
-               total : dataObj.incomeInvoice,
-               totalINC : dataObj.totalAmout.inc,
-               totalEXP : dataObj.totalAmout.exp,
-               percenty : dataObj.percentx
+                total: dataObj.incomeInvoice,
+                totalINC: dataObj.totalAmout.inc,
+                totalEXP: dataObj.totalAmout.exp,
+                percenty: dataObj.percentx
+            }
+        },
+        // delete items from list
+        deleteItems: function (type, id) {
+            var ids = dataObj.items[type].map(function (el) {
+                // console.log(el.id);
+                return el.id;
+            });
+
+            var index = ids.indexOf(id);
+            if (index !== -1) {
+                dataObj.items[type].splice(index, 1)
             }
         },
 
@@ -174,7 +189,7 @@ var calculationController = (function () {
     }
 })();
 
-// 3. CONNECTION CONTROLLER
+// *** 3. *** CONNECTION CONTROLLER
 var connectionController = (function (ui, cal) {
 
     var enterFunc = function () {
@@ -219,7 +234,32 @@ var connectionController = (function (ui, cal) {
                 enterFunc();
             }
         });
+        // click event listener function //  used here eventlistener bubling 
+        document.querySelector(DOM.container).addEventListener('click', function (el) {
+            //   parertNode is toward to out
+            // console.log(el.target);
+            // console.log(el.target.parentNode);
+            // console.log(el.target.parentNode.parentNode);
+            // console.log(el.target.parentNode.parentNode.parentNode);
+            // console.log(el.target.parentNode.parentNode.parentNode.parentNode);
+            // 
+            var list = el.target.parentNode.parentNode.parentNode.parentNode.id;
+            if (list) {
+                var arrID = list.split('-');
+                var type = arrID[0];
+                // string number -g convert number using parseInt();
+                var listID = parseInt(arrID[1]);
+                // 1. call the delete function from cal
+                cal.deleteItems(type, listID);
+                // 2. delete from user interface
+
+                // 3. estimate final balance
+
+            }
+        })
     }
+    // delete list button
+
     // public service /тохиргоо
     return {
         setUp: function () {
