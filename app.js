@@ -31,6 +31,12 @@ var userController = (function () {
         getDOMclassFunc: function () {
             return DOMclass; // OBJECT -g butsaah ni
         },
+        // deleting income or expenses function here
+        deleteListItems: function(id){
+            var el = document.getElementById(id);
+            // console.log(el);
+            el.parentNode.removeChild(el)
+        },
         // html list ttei ajillah function
         addHtmlList: function (item, type) {
             // orlogo zarlagiin list boloh html -g beltne
@@ -89,7 +95,6 @@ var userController = (function () {
             }
 
         },
-        // deleting income or expenses function here
 
     }
 })();
@@ -252,7 +257,7 @@ var connectionController = (function (ui, cal) {
                 // 1. call the delete function from cal
                 cal.deleteItems(type, listID);
                 // 2. delete from user interface
-
+                ui.deleteListItems(list);
                 // 3. estimate final balance
 
             }
