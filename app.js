@@ -1,3 +1,4 @@
+// *** 1.*** USER CONTROLLER, *** 2. *** CALCULATION CONTROLLER, *** 3. *** CONNECTION CONTROLLER
 // *** 1.*** USER CONTROLLER
 var userController = (function () {
     // HTML class nerudiig neg gazar bairluulah ni daraa class ner uurchlugdhud zasvarlah hylbar bolomjtoi tiimees tedgeer grab hiij bgaa class nernuudiig neg Object dotor hadglaj ugvel hylbar bolno
@@ -31,11 +32,14 @@ var userController = (function () {
         getDOMclassFunc: function () {
             return DOMclass; // OBJECT -g butsaah ni
         },
-        // deleting income or expenses function here
-        deleteListItems: function(id){
+        // deleting income or expenses function here // using removeChild()
+        deleteListItems: function (id) {
             var el = document.getElementById(id);
             // console.log(el);
+            // console.log(el.parentNode);
             el.parentNode.removeChild(el)
+            // console.log(el.parentNode.parentNode);
+
         },
         // html list ttei ajillah function
         addHtmlList: function (item, type) {
@@ -45,10 +49,10 @@ var userController = (function () {
             // var totalxxx = item.value;
             if (type === "inc") {
                 list = DOMclass.income__list;
-                listOfItems = '<div class="list-group-item"><li id="inc-%ID%"><div class="item__description float-left">$DESCRIPTION$</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">+ $VALUE$</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li></div>'
+                listOfItems = '<ul><li id="inc-%ID%"><div class="item__description float-left">$DESCRIPTION$</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">+ $VALUE$</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li></ul>'
             } else {
                 list = DOMclass.expenses__list;
-                listOfItems = '<div class="list-group-item"><li id="exp-%ID%"><div class="item__description float-left">$DESCRIPTION$</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">- $VALUE$</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li></div>'
+                listOfItems = '<ul><li id="exp-%ID%"><div class="item__description float-left">$DESCRIPTION$</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">- $VALUE$</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li></ul>'
             }
             // ter html utguudiig solij ugnu
             listOfItems = listOfItems.replace("%ID%", item.id);
@@ -56,7 +60,7 @@ var userController = (function () {
             listOfItems = listOfItems.replace("$VALUE$", item.value);
             //    console.log(item.id);
             //    console.log(item.description);
-            //    console.log(item.value);
+            //    console.log(item.value); 
             // console.log(item.value);
 
             // display to DOM
@@ -221,9 +225,10 @@ var connectionController = (function (ui, cal) {
         // console.log(logit.totalINC);
         // console.log(logit.totalEXP);
         // console.log(logit.percenty);
+        /// 5. display calculation
         ui.displayFunction(logit);
-
     };
+
     var setup_EventListener_Funct = function () {
         // shortCut
         var DOM = ui.getDOMclassFunc();
@@ -259,6 +264,7 @@ var connectionController = (function (ui, cal) {
                 // 2. delete from user interface
                 ui.deleteListItems(list);
                 // 3. estimate final balance
+                // updateFinance();
 
             }
         })
