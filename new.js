@@ -25,6 +25,7 @@ var uiController = (function () {
 
 })();
 
+
 // * 2 * finance controller
 var finController = (function () {
     // need id, description, value from when user enter data
@@ -45,21 +46,26 @@ var finController = (function () {
     // var total_Exp = 0;
     var all_User_Data = {
         data: {
-            inc_Data: [],
-            exp_Data: []
+            inc: [],
+            exp: []
         },
         total: {
-            total_inc: 0,
-            total_Exp: 0
+            inc: 0,
+            exp: 0
         }
     };
-    var i1 = new Income(1, "salary", 6000);
-    var e1 = new Expense(1, "rent", 600);
+    // var i1 = new Income(1, "salary", 6000);
+    // var e1 = new Expense(1, "rent", 600);
 
-    // i1.push(all_User_Data.data.inc_Data)
-    // e1.push(all_User_Data.data.exp_Data)
-
+    // all_User_Data.data.inc_Data.push(i1)
+    // all_User_Data.data.exp_Data.push(e1)
     console.log(all_User_Data);
+    // PUBKIC SERVICE FUNCTION OF FINCANCE CONTROLLER
+    return {
+        addData: function (type, desc, val) {
+            all_User_Data.data[type].push(id, desc, val)
+        }
+    }
 
 
 })();
@@ -70,9 +76,11 @@ var conController = (function (ui, fin) {
     // function that contains both mouse click && press key board on button
     var enterfunction = function () {
         // get input values from ui
-        var x = ui.uiPublic();
-        console.log(x.description, x.value, x.type);
+        var d = ui.uiPublic();
+        // console.log(x.description, x.value, x.type);
         // pass & save the value to finController
+        var ff = fin.addData(d.type, d.description, d.value)
+        console.log(ff);
         // value to DOM
         // calculate fincance
         // final result to DOM
