@@ -57,16 +57,32 @@ var finController = (function () {
     // var i1 = new Income(1, "salary", 6000);
     // var e1 = new Expense(1, "rent", 600);
 
-    // all_User_Data.data.inc_Data.push(i1)
-    // all_User_Data.data.exp_Data.push(e1)
+    // all_User_Data.data.inc_Data.push(i1);
+    // all_User_Data.data.exp_Data.push(e1);
     console.log(all_User_Data);
     // PUBKIC SERVICE FUNCTION OF FINCANCE CONTROLLER
     return {
         addData: function (type, desc, val) {
-            all_User_Data.data[type].push(id, desc, val)
-        }
-    }
+            var items, id;
+            if(all_User_Data.data[type] === 0 ){
+                id = 1;
+            }
+            else{
+                id = all_User_Data.data[type][all_User_Data.data[type].length-1].id + 1;
+            };
 
+            if(type === "inc"){
+                items = new Income(id, desc, val);
+            }else{
+                items = new Expense(id, desc, val);
+            }
+            all_User_Data.data[type].push(items);
+            
+        },
+        xx: function(){
+            return all_User_Data;
+        }
+    };
 
 })();
 
@@ -77,7 +93,7 @@ var conController = (function (ui, fin) {
     var enterfunction = function () {
         // get input values from ui
         var d = ui.uiPublic();
-        // console.log(x.description, x.value, x.type);
+        // console.log(d.type, d.description, d.value);
         // pass & save the value to finController
         var ff = fin.addData(d.type, d.description, d.value)
         console.log(ff);
