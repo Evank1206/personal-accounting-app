@@ -16,7 +16,7 @@ var uiController = (function () {
             return {
                 type: document.querySelector(domClasses.add_type).value,
                 description: document.querySelector(domClasses.add__description).value,
-                value: document.querySelector(domClasses.add__value).value,
+                value: parseInt(document.querySelector(domClasses.add__value).value), // using parseInt() method for STRING TO NUMBER "100" - 100;
                 // btn: document.querySelector(domClasses.addBTN)
             }
         },
@@ -117,9 +117,14 @@ var finController = (function () {
 
             return items;
         },
-        // see:function(){
-        //     return all_User_Data;
-        // }
+        // seeing datafor temperory
+        see: function () {
+            return all_User_Data;
+        },
+        // calculating values
+        calculation: function (type, re_items) {
+
+        }
     }
 
 
@@ -130,18 +135,25 @@ var conController = (function (ui, fin) {
 
     // function that contains both mouse click && press key board on button
     var enterfunction = function () {
-        // get input values from ui
+        // 1. get input values from uiController
         var d = ui.uiPublic();
         // console.log(d.description, d.value, d.type);
-        // pass & save the value to finController
-        var returned_Item = fin.addData(d.type, d.description, d.value)
-        // console.log(returned_Item.id);
-        // value to DOM
-        ui.addList_items(d.type, returned_Item);
+        if (d.description !== "" && d.value !== "") { // this is conditional statement is checking the inputs empty or not
+            // 2. pass & save the value to finController
+            var returned_Item = fin.addData(d.type, d.description, d.value);
+            // console.log(returned_Item.id);
+            // console.log(d.type);
+            // console.log(returned_Item.value);
+            // 3. user input // values to DOM
+            ui.addList_items(d.type, returned_Item);
+        }
         // clear the input field and focus the cursor in the first input
-        ui.input_clear()
-        // calculate fincance
+        ui.input_clear();
+        // 4. Calculate fincance
+        fin.calculation(d.type, returned_Item);
         // final result to DOM
+        fin.see(); // seeing data temperory
+
 
     };
 
