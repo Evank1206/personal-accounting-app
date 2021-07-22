@@ -89,7 +89,8 @@ var finController = (function () {
         total: {
             inc: 0,
             exp: 0
-        }
+        },
+        net: 0
     };
     // var i1 = new Income(1, "salary", 6000);
     // var e1 = new Expense(1, "rent", 600);
@@ -122,8 +123,16 @@ var finController = (function () {
             return all_User_Data;
         },
         // calculating values
-        calculation: function (type, re_items) {
-
+        calculation: function (type) {
+            var sum = 0;
+            // adding the values to sum
+            all_User_Data.data[type].forEach(function (el) {
+                sum = sum + el.value;
+            })
+            // putting the sum to total
+            all_User_Data.total[type] = sum;
+            // calculating pure income or available balance
+            all_User_Data.net = all_User_Data.total.inc - all_User_Data.total.exp;
         }
     }
 
@@ -150,7 +159,7 @@ var conController = (function (ui, fin) {
         // clear the input field and focus the cursor in the first input
         ui.input_clear();
         // 4. Calculate fincance
-        fin.calculation(d.type, returned_Item);
+        fin.calculation(d.type);
         // final result to DOM
         fin.see(); // seeing data temperory
 
