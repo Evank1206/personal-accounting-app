@@ -16,8 +16,8 @@ var uiController = (function () {
             return {
                 type: document.querySelector(domClasses.add_type).value,
                 description: document.querySelector(domClasses.add__description).value,
-                value: parseInt(document.querySelector(domClasses.add__value).value), // using parseInt() method for STRING TO NUMBER "100" - 100;
-                // btn: document.querySelector(domClasses.addBTN)
+                value: parseInt(document.querySelector(domClasses.add__value).value) // using parseInt() method for STRING TO NUMBER "100" - 100;
+
             }
         },
         // public function for DOM
@@ -40,7 +40,7 @@ var uiController = (function () {
         // clearing input // resset input 
         input_clear: function () {
             var clearfiled = document.querySelectorAll(domClasses.add__description + "," + domClasses.add__value);
-            // convert it into array
+            // convert list of items to array
             var newArray_input = Array.prototype.slice.call(clearfiled);
             // for(var i =0; i<newArray_input.length; i++){
             //     newArray_input[0] = "";
@@ -52,7 +52,6 @@ var uiController = (function () {
             });
             // after enter the data users crusor focus on first input
             newArray_input[0].focus()
-
         },
 
         addButton: function () {
@@ -90,7 +89,8 @@ var finController = (function () {
             inc: 0,
             exp: 0
         },
-        net: 0
+        net: 0,
+        percentage: 0
     };
     // var i1 = new Income(1, "salary", 6000);
     // var e1 = new Expense(1, "rent", 600);
@@ -133,6 +133,8 @@ var finController = (function () {
             all_User_Data.total[type] = sum;
             // calculating pure income or available balance
             all_User_Data.net = all_User_Data.total.inc - all_User_Data.total.exp;
+            // percentage estimation
+            all_User_Data.percentage = (all_User_Data.total.exp/all_User_Data.total.inc)*100
         }
     }
 
