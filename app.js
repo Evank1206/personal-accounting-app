@@ -1,284 +1,197 @@
-// *** 1.*** USER CONTROLLER, *** 2. *** CALCULATION CONTROLLER, *** 3. *** CONNECTION CONTROLLER
-// *** 1.*** USER CONTROLLER
-var userController = (function () {
-    // HTML class nerudiig neg gazar bairluulah ni daraa class ner uurchlugdhud zasvarlah hylbar bolomjtoi tiimees tedgeer grab hiij bgaa class nernuudiig neg Object dotor hadglaj ugvel hylbar bolno
-    var DOMclass = {
+// game architecture  // creating controllers
+
+// * 1 * user input controller
+var uiController = (function () {
+    var domClasses = {
         add_type: ".add__type",
         add__description: ".add__description",
         add__value: ".add__value",
-        item__description: ".item__description",
-        item__value: ".item__value",
-        add__btn: ".add__btn",
-        income__list: ".income__list",
-        expenses__list: ".expenses__list",
-        total__amount: ".card-total-amount",
-        income__balance: ".income-balance",
-        expense__balance: ".expense-balance",
-        income__percentage: ".income-percentage",
-        delete__btn: ".item__delete--btn",
-        container: ".container"
+        addBTN: ".add__btn",
+        income_list: ".income__list",
+        expense_list: ".expenses__list"
     };
-    // var x = "hello";
-    // public service/tohirgooo
+    // PUBLIC SERVICE OF ui-CONTROLLER 
     return {
-        inputValue: function () {
+        uiPublic: function () {
             return {
-                // grab values from inputs
-                inc_OR_exp: document.querySelector(DOMclass.add_type).value,
-                description: document.querySelector(DOMclass.add__description).value,
-                valuue: parseInt(document.querySelector(DOMclass.add__value).value), // added to value parseInt so it's convert string to number
+                type: document.querySelector(domClasses.add_type).value,
+                description: document.querySelector(domClasses.add__description).value,
+                value: parseInt(document.querySelector(domClasses.add__value).value), // using parseInt() method for STRING TO NUMBER "100" - 100;
+                // btn: document.querySelector(domClasses.addBTN)
             }
         },
-        getDOMclassFunc: function () {
-            return DOMclass; // OBJECT -g butsaah ni
-        },
-        // deleting income or expenses function here // using removeChild()
-        deleteListItems: function (id) {
-            var el = document.getElementById(id);
-            // console.log(el);
-            // console.log(el.parentNode);
-            el.parentNode.removeChild(el)
-            // console.log(el.parentNode.parentNode);
-
-        },
-        // html list ttei ajillah function
-        addHtmlList: function (item, type) {
-            // orlogo zarlagiin list boloh html -g beltne
-            var listOfItems;
-            var list;
-            // var totalxxx = item.value;
+        // public function for DOM
+        addList_items: function (type, items) {
+            var dom, list;
             if (type === "inc") {
-                list = DOMclass.income__list;
-                listOfItems = '<ul><li id="inc-%ID%"><div class="item__description float-left">$DESCRIPTION$</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">+ $VALUE$</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li></ul>'
+                list = domClasses.income_list;
+                dom = '<div class="item clearfix" id="income-$$ID$$"><div class="item__description">$$DESCRIPTION$$</div><div class="right clearfix"><div class="item__value">$$VALUE$$</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+
             } else {
-                list = DOMclass.expenses__list;
-                listOfItems = '<ul><li id="exp-%ID%"><div class="item__description float-left">$DESCRIPTION$</div><div class="right clearfix float-right"><div class="item__value float-left pr-4">- $VALUE$</div><div class="item__delete float-right"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></li></ul>'
+                list = domClasses.expense_list;
+                dom = '<div class="item clearfix" id="expense-$$ID$$"><div class="item__description">$$DESCRIPTION$$</div><div class="right clearfix"><div class="item__value">$$VALUE$$</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
             }
-            // ter html utguudiig solij ugnu
-            listOfItems = listOfItems.replace("%ID%", item.id);
-            listOfItems = listOfItems.replace("$DESCRIPTION$", item.description);
-            listOfItems = listOfItems.replace("$VALUE$", item.value);
-            //    console.log(item.id);
-            //    console.log(item.description);
-            //    console.log(item.value); 
-            // console.log(item.value);
+            dom = dom.replace("$$ID$$", items.id);
+            dom = dom.replace("$$DESCRIPTION$$", items.description);
+            dom = dom.replace("$$VALUE$$", items.value);
 
-            // display to DOM
-            document.querySelector(list).insertAdjacentHTML("beforeend", listOfItems);
-
+            document.querySelector(list).insertAdjacentHTML("beforeend", dom);
         },
-        // clear scrypts from input
-        clearInput: function () {
-            // collect all inputs value to list variable
-            var inputField = document.querySelectorAll(DOMclass.add__description + ", " + DOMclass.add__value);
-            // console.log(inputField);
-            // convert that list variables into array 
-            var inputArr = Array.prototype.slice.call(inputField);
-            // console.log(inputArr);
-            // loop through inputs and changes to empty! // string 
-            // for (var i = 0; i < inputArr.length; i++) {
-            //     inputArr[i].value = '';
+        // clearing input // resset input 
+        input_clear: function () {
+            var clearfiled = document.querySelectorAll(domClasses.add__description + "," + domClasses.add__value);
+            // convert it into array
+            var newArray_input = Array.prototype.slice.call(clearfiled);
+            // for(var i =0; i<newArray_input.length; i++){
+            //     newArray_input[0] = "";
             // }
-            // OR
-            inputArr.forEach(function (el, index, array) {
-                el.value = '';
+            // same as for loop
+            newArray_input.forEach(function (el) {
+                // to give empty to the arrays each element
+                el.value = "";
             });
-            // focus гэдэг element нь cursor -н байрлалыг зааж өгөх бөгөөд, бидий хувьд description дээр cursor oo аваачих учир discription ний location -г зааж өгнө.
-            inputArr[0].focus();
-        },
-        // show them all to display
-        displayFunction: function (allx) {
-            document.querySelector(DOMclass.total__amount).textContent = allx.total;
-            document.querySelector(DOMclass.income__balance).textContent = allx.totalINC;
-            document.querySelector(DOMclass.expense__balance).textContent = allx.totalEXP;
-            // some logic to if percentage is "0" there should not be "%" mark
-            if (allx.percenty === 0) {
-                document.querySelector(DOMclass.income__percentage).textContent = allx.percenty;
-            } else {
-                document.querySelector(DOMclass.income__percentage).textContent = allx.percenty + "%";
-            }
+            // after enter the data users crusor focus on first input
+            newArray_input[0].focus()
 
         },
 
+        addButton: function () {
+            return domClasses;
+        }
     }
+
 })();
-// *** 2. *** CALCULATION CONTROLLER
-var calculationController = (function () {
-    // private function
-    var Income = function (id, description, value) {
-        this.id = id;
-        this.description = description;
-        this.value = value;
-    }
-    // private function
-    var Expenses = function (id, description, value) {
+
+
+// * 2 * finance controller
+var finController = (function () {
+    // need id, description, value from when user enter data
+    function Income(id, description, value) {
         this.id = id;
         this.description = description;
         this.value = value;
     };
-    // function that calulates and adds exp or inc
-    calulateTotalIncome = function (type) {
-        var sum = 0;
-        dataObj.items[type].forEach(function (el) {
-            sum = sum + el.value;
-        });
-        dataObj.totalAmout[type] = sum;
+    function Expense(id, description, value) {
+        this.id = id;
+        this.description = description;
+        this.value = value;
     }
-    // var i1 = new Income(1, "from uber this month", 2500);
-    // var e1 = new Expenses(1, "buy bicycle", 100);
-    // var inc = [];
-    // var  exp = [];
-    // arr.push(i1);
-    // arr.push(e1);
-    // private data
-    var dataObj = {
-        items: {
+    // need to save data from user to massive // array
+    // var inc_Data = [];
+    // var exp_Data = [];
+    // var total_inc = 0;
+    // var total_Exp = 0;
+    var all_User_Data = {
+        data: {
             inc: [],
             exp: []
         },
-        totalAmout: {
+        total: {
             inc: 0,
             exp: 0
         },
-        incomeInvoice: 0,
-        percentx: 0,
-    }
-    // public service
+        net: 0
+    };
+    // var i1 = new Income(1, "salary", 6000);
+    // var e1 = new Expense(1, "rent", 600);
+
+    // all_User_Data.data.inc_Data.push(i1)
+    // all_User_Data.data.exp_Data.push(e1)
+    // console.log(all_User_Data);
+    // PUBKIC SERVICE FUNCTION OF FINCANCE CONTROLLER
     return {
-        // income or expenses add them together
-        ex_in_Add: function () {
-            calulateTotalIncome("inc");
-            calulateTotalIncome("exp");
-            // total income invoice
-            dataObj.incomeInvoice = dataObj.totalAmout.inc - dataObj.totalAmout.exp;
-            // calcumlate percentage
-            dataObj.percentx = Math.round((dataObj.totalAmout.exp / dataObj.totalAmout.inc) * 100);
-        },
-        // calculate pure income
-        takeAllEstimation: function () {
-            return {
-                total: dataObj.incomeInvoice,
-                totalINC: dataObj.totalAmout.inc,
-                totalEXP: dataObj.totalAmout.exp,
-                percenty: dataObj.percentx
-            }
-        },
-        // delete items from list
-        deleteItems: function (type, id) {
-            var ids = dataObj.items[type].map(function (el) {
-                // console.log(el.id);
-                return el.id;
-            });
-
-            var index = ids.indexOf(id);
-            if (index !== -1) {
-                dataObj.items[type].splice(index, 1)
-            }
-        },
-
-        // grabbing value from input 
-        addItem: function (type, descrip, valu) {
-            var item;
-            var id;
-            if (dataObj.items[type].length === 0) id = 1;
-            else id = dataObj.items[type][dataObj.items[type].length - 1].id + 1;
-
-            // defense on type it would toggle between income or expenses
-            if (type === "inc") {
-                item = new Income(id, descrip, valu);
+        addData: function (type, desc, val) {
+            var items, id;
+            if (all_User_Data.data[type].length === 0) {
+                id = 1;
             } else {
-                item = new Expenses(id, descrip, valu);
+                // got lastest item from array and add new item after it then put their id's in id
+                id = all_User_Data.data[type][all_User_Data.data[type].length - 1].id + 1;
+            };
+
+            if (type === "inc") {
+                items = new Income(id, desc, val);
+            } else {
+                items = new Expense(id, desc, val);
             }
-            dataObj.items[type].push(item);
-            return item;
+            all_User_Data.data[type].push(items);
+
+            return items;
         },
-        dataaa: function () {
-            return dataObj;
+        // seeing datafor temperory
+        see: function () {
+            return all_User_Data;
+        },
+        // calculating values
+        calculation: function (type) {
+            var sum = 0;
+            // adding the values to sum
+            all_User_Data.data[type].forEach(function (el) {
+                sum = sum + el.value;
+            })
+            // putting the sum to total
+            all_User_Data.total[type] = sum;
+            // calculating pure income or available balance
+            all_User_Data.net = all_User_Data.total.inc - all_User_Data.total.exp;
         }
     }
+
+
 })();
 
-// *** 3. *** CONNECTION CONTROLLER
-var connectionController = (function (ui, cal) {
+// * 3 * connection controller
+var conController = (function (ui, fin) {
 
-    var enterFunc = function () {
-        // 1. get ui value
-        var x = ui.inputValue();
-        // console.log(x.inc_OR_exp);
-        // console.log(x.description === "");
-        // console.log(x.valuue === "");
-        // algorithem for хэрвээ 2 input хоосон бол юу ч дэлгэцрүү гаргахгүй
-        if (x.description && x.valuue !== '') {
-            // 2. save value in calculation controller
-            var y = cal.addItem(x.inc_OR_exp, x.description, x.valuue)
-            // console.log(y);
-            // 3. display user's entered data
-            ui.addHtmlList(y, x.inc_OR_exp);
-            // clear input function calls here
-            ui.clearInput();
+    // function that contains both mouse click && press key board on button
+    var enterfunction = function () {
+        // 1. get input values from uiController
+        var d = ui.uiPublic();
+        // console.log(d.description, d.value, d.type);
+        if (d.description !== "" && d.value !== "") { // this is conditional statement is checking the inputs empty or not
+            // 2. pass & save the value to finController
+            var returned_Item = fin.addData(d.type, d.description, d.value);
+            // console.log(returned_Item.id);
+            // console.log(d.type);
+            // console.log(returned_Item.value);
+            // 3. user input // values to DOM
+            ui.addList_items(d.type, returned_Item);
         }
-        // 3. add expenses & incomes values function  
-        cal.ex_in_Add(x.inc_OR_exp);
-        // 4. calculate pure income from expense and income
-        var logit = cal.takeAllEstimation();
-        // console.log(logit.total);
-        // console.log(logit.totalINC);
-        // console.log(logit.totalEXP);
-        // console.log(logit.percenty);
-        /// 5. display calculation
-        ui.displayFunction(logit);
+        // clear the input field and focus the cursor in the first input
+        ui.input_clear();
+        // 4. Calculate fincance
+        fin.calculation(d.type);
+        // final result to DOM
+        fin.see(); // seeing data temperory
+
+
     };
 
-    var setup_EventListener_Funct = function () {
-        // shortCut
-        var DOM = ui.getDOMclassFunc();
-        // WHEN CLICK THE BUTTON
-        document.querySelector(DOM.add__btn).addEventListener("click", function () {
-            enterFunc();
+    // local/hiden function
+    var letStartApp = function () {
+        // click && enter keypress 's dom class 
+        var DOM = ui.addButton();
+        // when click the button
+        document.querySelector(DOM.addBTN).addEventListener("click", function () {
+            enterfunction();
         });
-        // WHEN PRESS ENTER ON KEYBOARD
+
+        // when press the enter keyboard
         document.addEventListener("keypress", function (event) {
-            // "which" is older verion of keyCode. might be some old computer has old browser & can recognize "which"
-            if (event.keyCode === 13 || event.which === 13) {
-                // console.log(event.keyCode);
-                enterFunc();
+            if (event.keyCode === 13) {
+                enterfunction();
             }
         });
-        // click event listener function //  used here eventlistener bubling 
-        document.querySelector(DOM.container).addEventListener('click', function (el) {
-            //   parertNode is toward to out
-            // console.log(el.target);
-            // console.log(el.target.parentNode);
-            // console.log(el.target.parentNode.parentNode);
-            // console.log(el.target.parentNode.parentNode.parentNode);
-            // console.log(el.target.parentNode.parentNode.parentNode.parentNode);
-            // 
-            var list = el.target.parentNode.parentNode.parentNode.parentNode.id;
-            if (list) {
-                var arrID = list.split('-');
-                var type = arrID[0];
-                // string number -g convert number using parseInt();
-                var listID = parseInt(arrID[1]);
-                // 1. call the delete function from cal
-                cal.deleteItems(type, listID);
-                // 2. delete from user interface
-                ui.deleteListItems(list);
-                // 3. estimate final balance
-                // updateFinance();
 
-            }
-        })
-    }
-    // delete list button
+    };
 
-    // public service /тохиргоо
+    // PUBLIC SERVICE OF conCONNECTION CONTROLLER 
     return {
-        setUp: function () {
-            console.log("app starting now ...");
-            setup_EventListener_Funct();
+        conPublic: function () {
+            console.log("App starting......");
+            letStartApp()
         }
     }
 
-})(userController, calculationController);
+})(uiController, finController);
 
-connectionController.setUp();
+conController.conPublic();
