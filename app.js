@@ -119,9 +119,9 @@ var finController = (function () {
             return items;
         },
         // seeing datafor temperory
-        see: function () {
-            return all_User_Data;
-        },
+        // see: function () {
+        //     return all_User_Data;
+        // },
         // calculating values
         calculation: function (type) {
             var sum = 0;
@@ -134,7 +134,16 @@ var finController = (function () {
             // calculating pure income or available balance
             all_User_Data.net = all_User_Data.total.inc - all_User_Data.total.exp;
             // percentage estimation
-            all_User_Data.percentage = (all_User_Data.total.exp/all_User_Data.total.inc)*100
+            all_User_Data.percentage = Math.round((all_User_Data.total.exp/all_User_Data.total.inc)*100)
+        },
+        // returning all calculated data to dom
+        return_calculation: function(){
+            return {
+                all_inc : all_User_Data.total.inc,
+                all_exp : all_User_Data.total.exp,
+                all_net : all_User_Data.net,
+                all_percentage : all_User_Data.percentage
+            }
         }
     }
 
@@ -160,10 +169,13 @@ var conController = (function (ui, fin) {
         }
         // clear the input field and focus the cursor in the first input
         ui.input_clear();
-        // 4. Calculate fincance
+        // 4. Calculate fincance (income, expense, available balance & percentage)
         fin.calculation(d.type);
-        // final result to DOM
-        fin.see(); // seeing data temperory
+        // 5. those estimated data to DOM
+        fin.return_calculation();
+
+        // fin.see(); // seeing data temperory
+
 
 
     };
