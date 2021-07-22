@@ -174,7 +174,7 @@ var conController = (function (ui, fin) {
         // 5. those estimated data to DOM
         fin.return_calculation();
 
-        // fin.see(); // seeing data temperory
+        
 
 
 
