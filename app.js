@@ -172,7 +172,8 @@ var conController = (function (ui, fin) {
         // 4. Calculate fincance (income, expense, available balance & percentage)
         fin.calculation(d.type);
         // 5. those estimated data to DOM
-        fin.return_calculation();
+        var estimation = fin.return_calculation();
+        console.log(estimation);
 
         // fin.see(); // seeing data temperory
 
