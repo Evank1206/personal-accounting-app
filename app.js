@@ -8,7 +8,8 @@ var uiController = (function () {
         add__value: ".add__value",
         addBTN: ".add__btn",
         income_list: ".income__list",
-        expense_list: ".expenses__list"
+        expense_list: ".expenses__list",
+        delete_btn: ".item__delete--btn"
     };
     // PUBLIC SERVICE OF ui-CONTROLLER 
     return {
@@ -52,6 +53,19 @@ var uiController = (function () {
             });
             // after enter the data users crusor focus on first input
             newArray_input[0].focus()
+        },
+        // displaying function
+        display_data: function (est) {
+            document.querySelector(".budget__value").textContent = est.all_net
+            document.querySelector(".budget__income--value").textContent = est.all_inc
+            document.querySelector(".budget__expenses--value").textContent = est.all_exp
+            // conditional check: if there is not any % amount "%" sign shouldn't appear 
+            if (est.all_percentage !== 0) {
+                document.querySelector(".budget__expenses--percentage").textContent = est.all_percentage + "%"
+            } else {
+                document.querySelector(".budget__expenses--percentage").textContent = est.all_percentage;
+            }
+
         },
 
         addButton: function () {
@@ -98,6 +112,7 @@ var finController = (function () {
     // all_User_Data.data.inc_Data.push(i1)
     // all_User_Data.data.exp_Data.push(e1)
     // console.log(all_User_Data);
+
     // PUBKIC SERVICE FUNCTION OF FINCANCE CONTROLLER
     return {
         addData: function (type, desc, val) {
@@ -134,15 +149,15 @@ var finController = (function () {
             // calculating pure income or available balance
             all_User_Data.net = all_User_Data.total.inc - all_User_Data.total.exp;
             // percentage estimation
-            all_User_Data.percentage = Math.round((all_User_Data.total.exp/all_User_Data.total.inc)*100)
+            all_User_Data.percentage = Math.round((all_User_Data.total.exp / all_User_Data.total.inc) * 100)
         },
         // returning all calculated data to dom
-        return_calculation: function(){
+        return_calculation: function () {
             return {
-                all_inc : all_User_Data.total.inc,
-                all_exp : all_User_Data.total.exp,
-                all_net : all_User_Data.net,
-                all_percentage : all_User_Data.percentage
+                all_inc: all_User_Data.total.inc,
+                all_exp: all_User_Data.total.exp,
+                all_net: all_User_Data.net,
+                all_percentage: all_User_Data.percentage
             }
         }
     }
@@ -171,11 +186,12 @@ var conController = (function (ui, fin) {
         ui.input_clear();
         // 4. Calculate fincance (income, expense, available balance & percentage)
         fin.calculation(d.type);
-        // 5. those estimated data to DOM
+        // 5. those estimated data to preparing to DOM
         var estimation = fin.return_calculation();
         console.log(estimation);
+        // 6. DOM function
+        ui.display_data(estimation);
 
-        
 
 
 
