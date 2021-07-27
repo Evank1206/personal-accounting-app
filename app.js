@@ -159,6 +159,14 @@ var finController = (function () {
                 all_net: all_User_Data.net,
                 all_percentage: all_User_Data.percentage
             }
+        },
+        delete_items: function (type, id) {
+            var dlet;
+            var items_id = all_User_Data.data[type].map(function (el) {
+                return el.id;
+            })
+            dlet = all_User_Data.data[type].splice(items_id.indexOf(id), 1);
+            return dlet;
         }
     }
 
@@ -176,22 +184,26 @@ var conController = (function (ui, fin) {
         if (d.description !== "" && d.value !== "") { // this is conditional statement is checking the inputs empty or not
             // 2. pass & save the value to finController
             var returned_Item = fin.addData(d.type, d.description, d.value);
+            console.log(returned_Item);
             // console.log(returned_Item.id);
+            // console.log(returned_Item.description);
             // console.log(d.type);
             // console.log(returned_Item.value);
             // 3. user input // values to DOM
             ui.addList_items(d.type, returned_Item);
         }
-        // clear the input field and focus the cursor in the first input
+        // clear the input field and focus the cursor in the first input 
         ui.input_clear();
         // 4. Calculate fincance (income, expense, available balance & percentage)
         fin.calculation(d.type);
-        // 5. those estimated data to preparing to DOM
+        // 5. Those estimated data to preparing to DOM
         var estimation = fin.return_calculation();
         console.log(estimation);
         // 6. DOM function
         ui.display_data(estimation);
-
+        // 7. Using the return_Item for finding corret id item
+        var xxx = fin.delete_items(d.type, returned_Item.id);
+        console.log(xxx);
 
 
 
