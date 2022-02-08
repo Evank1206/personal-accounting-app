@@ -160,13 +160,20 @@ var finController = (function () {
                 all_percentage: all_User_Data.percentage
             }
         },
+        // delete item with using there uniue ID, from the array 
         delete_items: function (type, id) {
-            var dlet;
+            // to get every items unique ID from array, using map() 
             var items_id = all_User_Data.data[type].map(function (el) {
                 return el.id;
             })
-            dlet = all_User_Data.data[type].splice(items_id.indexOf(id), 1);
-            return dlet;
+            // to get the unique ID's index/location, using indexOf()
+            var index = all_User_Data.data[type].indexOf(items_id);
+            // check the condition if the deleting won't return -1, (array дотор байхүй элементийг устгахыг завдах үед array -ний хамгийн арын элементийг устгадаг, ингэж устагуулах үгүй нь тулд, нөгцөл шалгана)
+            if (index !== -1) {
+                all_User_Data.data[type].splice(index, 1)
+            }
+            return index;
+
         }
     }
 
@@ -203,7 +210,7 @@ var conController = (function (ui, fin) {
         ui.display_data(estimation);
         // 7. Using the return_Item for finding corret id item
         var xxx = fin.delete_items(d.type, returned_Item.id);
-        console.log(xxx);
+        // console.log(xxx);
 
 
 
@@ -224,6 +231,10 @@ var conController = (function (ui, fin) {
                 enterfunction();
             }
         });
+        // deleting items eventListener 
+        document.querySelector(".container").addEventListener("click", function(el){
+            console.log(el.target.parentNode.parentNode);
+        })
 
     };
 
