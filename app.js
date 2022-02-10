@@ -67,6 +67,13 @@ var uiController = (function () {
             }
 
         },
+        // deleting item from DOM SAMPLE
+        raseIt : function(xxx){
+            document.querySelector(".item__delete--btn").addEventListener("click", function(){
+                // document.querySelector(".item__delete") = block;
+                console.log("deleted");
+            })
+        },
 
         addButton: function () {
             return domClasses;
@@ -210,7 +217,8 @@ var conController = (function (ui, fin) {
         ui.display_data(estimation);
         // 7. Using the return_Item for finding corret id item
         var xxx = fin.delete_items(d.type, returned_Item.id);
-        // console.log(xxx);
+        console.log(xxx);
+        ui.raseIt(xxx)
 
 
 
@@ -242,7 +250,7 @@ var conController = (function (ui, fin) {
     return {
         conPublic: function () {
             console.log("App starting......");
-            letStartApp()
+            letStartApp();
         }
     }
 
