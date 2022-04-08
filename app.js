@@ -26,11 +26,11 @@ var uiController = (function () {
             var dom, list;
             if (type === "inc") {
                 list = domClasses.income_list;
-                dom = '<div class="item clearfix" id="income-$$ID$$"><div class="item__description">$$DESCRIPTION$$</div><div class="right clearfix"><div class="item__value">$$VALUE$$</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+                dom = '<div class="item clearfix" id="inc-$$ID$$"><div class="item__description">$$DESCRIPTION$$</div><div class="right clearfix"><div class="item__value">$$VALUE$$</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
 
             } else {
                 list = domClasses.expense_list;
-                dom = '<div class="item clearfix" id="expense-$$ID$$"><div class="item__description">$$DESCRIPTION$$</div><div class="right clearfix"><div class="item__value">$$VALUE$$</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+                dom = '<div class="item clearfix" id="exp-$$ID$$"><div class="item__description">$$DESCRIPTION$$</div><div class="right clearfix"><div class="item__value">$$VALUE$$</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
             }
             dom = dom.replace("$$ID$$", items.id);
             dom = dom.replace("$$DESCRIPTION$$", items.description);
@@ -69,9 +69,14 @@ var uiController = (function () {
         },
         // deleting item from DOM SAMPLE
         raseIt : function(xxx){
-            document.querySelector(".item__delete--btn").addEventListener("click", function(){
-                // document.querySelector(".item__delete") = block;
+            document.querySelector(".container").addEventListener("click", function(event){
+
+                // console.log(typeof event.target.id);
+                
                 console.log("deleted");
+                
+
+                
             })
         },
 
@@ -169,18 +174,22 @@ var finController = (function () {
         },
         // delete item with using there uniue ID, from the array 
         delete_items: function (type, id) {
-            // to get every items unique ID from array, using map() 
+            // to get every items unique ID from array, using map()
             var items_id = all_User_Data.data[type].map(function (el) {
                 return el.id;
-            })
+            });
             // to get the unique ID's index/location, using indexOf()
-            var index = all_User_Data.data[type].indexOf(items_id);
+            var index = items_id.indexOf(id);
             // check the condition if the deleting won't return -1, (array дотор байхүй элементийг устгахыг завдах үед array -ний хамгийн арын элементийг устгадаг, ингэж устагуулах үгүй нь тулд, нөгцөл шалгана)
-            if (index !== -1) {
+            if (index !== -1){
                 all_User_Data.data[type].splice(index, 1)
             }
+
             return index;
 
+        },
+        showData : function(){
+            return all_User_Data;
         }
     }
 
@@ -216,9 +225,12 @@ var conController = (function (ui, fin) {
         // 6. DOM function
         ui.display_data(estimation);
         // 7. Using the return_Item for finding corret id item
-        var xxx = fin.delete_items(d.type, returned_Item.id);
-        console.log(xxx);
-        ui.raseIt(xxx)
+        // var xxx = fin.delete_items(d.type, returned_Item.id);
+        // console.log(xxx);
+        // ui.raseIt();
+
+        // showing data for temperory
+        fin.showData()
 
 
 
@@ -240,9 +252,19 @@ var conController = (function (ui, fin) {
             }
         });
         // deleting items eventListener 
-        document.querySelector(".container").addEventListener("click", function(el){
-            console.log(el.target.parentNode.parentNode);
-        })
+        document.querySelector(".container").addEventListener("click", function(event){
+            // to find exact click which was button, for that first to find container with "id"
+            var htmlID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+                if(htmlID){
+                var toSaprate = htmlID.split("-");
+                var type = toSaprate[0];
+                var id_Num = parseInt(toSaprate[1]);
+                // console.log(type + " " + id_Num);
+                fin.delete_items(type, id_Num);
+                ui.raseIt();
+
+                };
+        });
 
     };
 
