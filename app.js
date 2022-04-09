@@ -26,11 +26,11 @@ var uiController = (function () {
             var dom, list;
             if (type === "inc") {
                 list = domClasses.income_list;
-                dom = '<div class="item clearfix" id="inc-$$ID$$"><div class="item__description">$$DESCRIPTION$$</div><div class="right clearfix"><div class="item__value">$$VALUE$$</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+                dom = '<div class="item clearfix" id="inc-$$ID$$"><div class="item__description">$$DESCRIPTION$$</div><div class="right clearfix"><div class="item__value">$$VALUE$$</div><div class="item__delete"><button class="item__delete--btn"><i class="fa fa-close""></i></button></div></div></div>'
 
             } else {
                 list = domClasses.expense_list;
-                dom = '<div class="item clearfix" id="exp-$$ID$$"><div class="item__description">$$DESCRIPTION$$</div><div class="right clearfix"><div class="item__value">$$VALUE$$</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+                dom = '<div class="item clearfix" id="exp-$$ID$$"><div class="item__description">$$DESCRIPTION$$</div><div class="right clearfix"><div class="item__value">$$VALUE$$</div><div class="item__delete"><button class="item__delete--btn"><i class="fa fa-close""></i></button></div></div></div>'
             }
             dom = dom.replace("$$ID$$", items.id);
             dom = dom.replace("$$DESCRIPTION$$", items.description);
@@ -74,7 +74,7 @@ var uiController = (function () {
             // xxx is html div than below
             // console.log(xxx);
             // console.log(xxx.parentNode);
-            // find the div contains xxx div by parentNode and then using removeChild to delete itself
+            // find the div contains xxx div by parentNode and then using removeChild to 
             xxx.parentNode.removeChild(xxx);
 
         },
