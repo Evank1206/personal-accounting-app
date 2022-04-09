@@ -68,16 +68,15 @@ var uiController = (function () {
 
         },
         // deleting item from DOM SAMPLE
-        raseIt : function(xxx){
-            document.querySelector(".container").addEventListener("click", function(event){
+        raseIt : function(element){
+            // receiving by element id name inc-id or exp-id and then select it by getElementById
+            var xxx = document.getElementById(element);
+            // xxx is html div than below
+            // console.log(xxx);
+            // console.log(xxx.parentNode);
+            // find the div contains xxx div by parentNode and then using removeChild to delete itself
+            xxx.parentNode.removeChild(xxx);
 
-                // console.log(typeof event.target.id);
-                
-                console.log("deleted");
-                
-
-                
-            })
         },
 
         addButton: function () {
@@ -255,13 +254,15 @@ var conController = (function (ui, fin) {
         document.querySelector(".container").addEventListener("click", function(event){
             // to find exact click which was button, for that first to find container with "id"
             var htmlID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+            // console.log(htmlID);
                 if(htmlID){
                 var toSaprate = htmlID.split("-");
                 var type = toSaprate[0];
                 var id_Num = parseInt(toSaprate[1]);
                 // console.log(type + " " + id_Num);
                 fin.delete_items(type, id_Num);
-                ui.raseIt();
+                console.log(htmlID)
+                ui.raseIt(htmlID);
 
                 };
         });
