@@ -187,9 +187,10 @@ var finController = (function () {
             return index;
 
         },
-        showData : function(){
-            return all_User_Data;
-        }
+        // showing data for temperory
+        // showData : function(){
+        //     return all_User_Data;
+        // }
     }
 
 
@@ -220,7 +221,7 @@ var conController = (function (ui, fin) {
         fin.calculation(d.type);
         // 5. Those estimated data to preparing to DOM
         var estimation = fin.return_calculation();
-        console.log(estimation);
+        // console.log(estimation);
         // 6. DOM function
         ui.display_data(estimation);
         // 7. Using the return_Item for finding corret id item
@@ -229,10 +230,7 @@ var conController = (function (ui, fin) {
         // ui.raseIt();
 
         // showing data for temperory
-        fin.showData()
-
-
-
+        // fin.showData()
     };
 
     // local/hiden function
