@@ -1,6 +1,6 @@
-// game architecture  // creating controllers
+/* GAME ARCHITECTURE // CREATING CONTROLLERS */
 
-// * 1 * user input controller
+/** 1 * USER INPUT CONTROLLER */
 var uiController = (function () {
     var domClasses = {
         add_type: ".add__type",
@@ -68,11 +68,13 @@ var uiController = (function () {
 
         },
         // deleting item from DOM SAMPLE
-        raseIt: function (xxx) {
-            document.querySelector(".item__delete--btn").addEventListener("click", function () {
-                // document.querySelector(".item__delete") = block;
-                console.log("deleted");
-            })
+        raseIt: function (item_ID) {
+            console.log(item_ID);
+            var getHTML_Div = document.getElementById(item_ID);
+            // // console.log(getHTML_Div);
+            // // console.log(getHTML_Div.parentNode);
+            getHTML_Div.parentNode.removeChild(getHTML_Div);
+
         },
 
         addButton: function () {
@@ -82,8 +84,7 @@ var uiController = (function () {
 
 })();
 
-
-// * 2 * finance controller
+/** 2 * FINANCE || CALCULATION CONTROLLER */
 var finController = (function () {
     // need id, description, value from when user enter data
     function Income(id, description, value) {
@@ -170,9 +171,10 @@ var finController = (function () {
         // delete item with using there uniue ID, from the array 
         delete_items: function (type, id) {
             // to get every items unique ID from array, using map();
+            // console.log(all_User_Data.data[type]);
             var items_id = all_User_Data.data[type].map(function (el) {
                 return el.id;
-            })
+            });
             // to get the unique ID's index/location, using indexOf()
             var index = items_id.indexOf(id);
             // check the condition if the deleting won't return -1, (array дотор байхүй элементийг устгахыг завдах үед array -ний хамгийн арын элементийг устгадаг, ингэж устагуулах үгүй нь тулд, нөгцөл шалгана)
@@ -184,50 +186,59 @@ var finController = (function () {
         },
 
         // show data temperorly
-        showData: function () {
-            return all_User_Data;
-        }
+        // showData: function () {
+        //     return all_User_Data;
+        // }
     }
 
 
 })();
 
-// * 3 * connection controller
+/** 3 * CONNECTION CONTROLLER */
 var conController = (function (ui, fin) {
 
     // function that contains both mouse click && press key board on button
     var enterfunction = function () {
         // 1. get input values from uiController
-        var d = ui.uiPublic();
+        var input_Val = ui.uiPublic();
         // console.log(d.description, d.value, d.type);
-        if (d.description !== "" && d.value !== "") { // this is conditional statement is checking the inputs empty or not
+        if (input_Val.description !== "" && input_Val.value !== "") { // this is conditional statement is checking the inputs empty or not
             // 2. pass & save the value to finController
-            var returned_Item = fin.addData(d.type, d.description, d.value);
-            console.log(returned_Item);
-            // console.log(returned_Item.id);
-            // console.log(returned_Item.description);
-            // console.log(d.type);
-            // console.log(returned_Item.value);
+            var returned_Item = fin.addData(input_Val.type, input_Val.description, input_Val.value);
             // 3. user input // values to DOM
-            ui.addList_items(d.type, returned_Item);
-        }
-        // clear the input field and focus the cursor in the first input 
-        ui.input_clear();
-        // 4. Calculate fincance (income, expense, available balance & percentage)
-        fin.calculation(d.type);
-        // 5. Those estimated data to preparing to DOM
-        var estimation = fin.return_calculation();
-        console.log(estimation);
-        // 6. DOM function
-        ui.display_data(estimation);
-        // 7. Using the return_Item for finding corret id item
-        // var xxx = fin.delete_items(d.type, returned_Item.id);
-        // console.log(xxx);
-        // ui.raseIt(xxx)
+            ui.addList_items(input_Val.type, returned_Item);
+            // ield and focus the cursor in the first input 
+            // clear the input field and focus the cursor in the first input 
+            ui.input_clear();
+
+            // // 4. Calculate fincance (income, expense, available balance & percentage)
+            // fin.calculation(d.type);
+            // // 5. Those estimated data to preparing to DOM
+            // var estimation = fin.return_calculation();
+            // // console.log(estimation);
+            // // 6. DOM function
+            // ui.display_data(estimation);
+
+            re_Calculate();
+
+        };
 
         // showing data temperorly
-        finController.showData();
+        // finController.showData();
 
+    };
+
+    // recalculate function after delete
+    var re_Calculate = function () {
+        var input_Val = ui.uiPublic();
+        // 4. Calculate fincance (income, expense, available balance & percentage)
+        fin.calculation(input_Val.type);
+        // 5. Those estimated data to preparing to DOM
+        var estimation = fin.return_calculation();
+        // console.log(estimation);
+        // 6. DOM function
+        ui.display_data(estimation);
+        console.log("lalala");
     };
 
     // local/hiden function
@@ -257,8 +268,16 @@ var conController = (function (ui, fin) {
                 var clicked_item_Id = parseInt(arr[1]);
                 // call the delete function from finController 
                 fin.delete_items(type, clicked_item_Id);
+                // deleting from user interface
+                ui.raseIt(id);
+                re_Calculate();
             };
 
+            // fin.delete_items(type, clicked_item_Id);
+
+            // ui.raseIt(id);
+
+            // re_Calculate();
 
 
 
@@ -270,6 +289,7 @@ var conController = (function (ui, fin) {
     return {
         conPublic: function () {
             console.log("App starting......");
+            alert("App starting......");
             letStartApp();
         }
     }
