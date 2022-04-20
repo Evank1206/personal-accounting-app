@@ -13,7 +13,7 @@
         <div class="top">
             <div class="budget">
                 <div class="budget__title">
-                    Available Budget in <span class="budget__title--month">%Month000000000git %</span>:
+                    Available Budget<span class="budget__title--month"></span>
                 </div>
                 
                 <div class="budget__value">0</div>
@@ -45,8 +45,9 @@
                         <option value="inc" selected>+</option>
                         <option value="exp">-</option>
                     </select>
-                    <input type="text" class="add__description" placeholder="Add description">
-                    <input type="number" class="add__value" placeholder="Value">
+                    <!-- onkeypress="return /[a-z]/i.test(event.key)"  is user input only letter-->
+                    <input type="text" onkeypress="return /[a-z]/i.test(event.key)" class="add__description" placeholder="Add description">
+                    <input type="number" class="add__value" placeholder=00000>
                     <button class="add__btn"><i class="fa fa-check-square" style="font-size:36px"></i></button>
                 </div>
             </div>
@@ -63,6 +64,7 @@
                             <div class="right clearfix">
                                 <div class="item__value">+ 2,100.00</div>
                                 <div class="item__delete">
+                                    <div class="budget__expenses--percentage">100%</div>
                                     <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
                                 </div>
                             </div>

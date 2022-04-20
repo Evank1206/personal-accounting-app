@@ -30,7 +30,8 @@ var uiController = (function () {
 
             } else {
                 list = domClasses.expense_list;
-                dom = '<div class="item clearfix" id="exp-$$ID$$"><div class="item__description">$$DESCRIPTION$$</div><div class="right clearfix"><div class="item__value">$$VALUE$$</div><div class="item__delete"><button class="item__delete--btn"><i class="fa fa-close""></i></button></div></div></div>'
+                                    
+                dom = '<div class="item clearfix" id="exp-$$ID$$"><div class="item__description">$$DESCRIPTION$$</div><div class="right clearfix"><div class="item__value">$$VALUE$$</div><div class="item__delete"><div class="budget__expenses--percentage">0%</div><button class="item__delete--btn"><i class="fa fa-close""></i></button></div></div></div>'
             }
             dom = dom.replace("$$ID$$", items.id);
             dom = dom.replace("$$DESCRIPTION$$", items.description);
@@ -159,8 +160,13 @@ var finController = (function () {
             all_User_Data.total[type] = sum;
             // calculating pure income or available balance
             all_User_Data.net = all_User_Data.total.inc - all_User_Data.total.exp;
+
+            // this conditional statment is for rid of "NaN" from display
+            if(all_User_Data.total.exp !== 0){
             // percentage estimation
             all_User_Data.percentage = Math.round((all_User_Data.total.exp / all_User_Data.total.inc) * 100)
+            }
+            
         },
         // returning all calculated data to dom
         return_calculation: function () {
@@ -203,36 +209,54 @@ var conController = (function (ui, fin) {
     var enterfunction = function () {
         // 1. get input values from uiController
         var d = ui.uiPublic();
+
         // console.log(d.description, d.value, d.type);
         if (d.description !== "" && d.value !== "") { // this is conditional statement is checking the inputs empty or not
             // 2. pass & save the value to finController
             var returned_Item = fin.addData(d.type, d.description, d.value);
-            console.log(returned_Item);
+            // console.log(returned_Item);
             // console.log(returned_Item.id);
             // console.log(returned_Item.description);
             // console.log(d.type);
             // console.log(returned_Item.value);
             // 3. user input // values to DOM
             ui.addList_items(d.type, returned_Item);
+            // clear the input field and focus the cursor in the first input 
+            ui.input_clear();
+            // To recaluclate after delete item from the list
+            re_calculate();
+
         }
-        // clear the input field and focus the cursor in the first input 
-        ui.input_clear();
+      
+        // // // 4. Calculate fincance (income, expense, available balance & percentage)
+        // fin.calculation(d.type);
+        // // // 5. Those estimated data to preparing to DOM
+        // var estimation = fin.return_calculation();
+        // // // console.log(estimation);
+        // // // 6. DOM function
+        // ui.display_data(estimation);
+        // 7. Using the return_Item for finding corret id item
+        // var xxx = fin.delete_items(d.type, returned_Item.id);
+        // console.log(xxx);
+        // ui.raseIt();
+        
+        // showing data for temperory
+        // fin.showData()
+      
+    };
+
+    // To recaluclate after delete item from the list
+    var re_calculate = function (){
+        var inputVal = ui.uiPublic();
         // 4. Calculate fincance (income, expense, available balance & percentage)
-        fin.calculation(d.type);
+        fin.calculation(inputVal.type);
         // 5. Those estimated data to preparing to DOM
         var estimation = fin.return_calculation();
         // console.log(estimation);
         // 6. DOM function
         ui.display_data(estimation);
-        // 7. Using the return_Item for finding corret id item
-        // var xxx = fin.delete_items(d.type, returned_Item.id);
-        // console.log(xxx);
-        // ui.raseIt();
-
-        // showing data for temperory
-        // fin.showData()
-    };
-
+   }
+    
     // local/hiden function
     var letStartApp = function () {
         // click && enter keypress 's dom class 
@@ -259,9 +283,11 @@ var conController = (function (ui, fin) {
                 var id_Num = parseInt(toSaprate[1]);
                 // console.log(type + " " + id_Num);
                 fin.delete_items(type, id_Num);
-                console.log(htmlID)
+                console.log(htmlID);
                 ui.raseIt(htmlID);
 
+            // To recaluclate after delete item from the list
+                re_calculate();
                 };
         });
 
