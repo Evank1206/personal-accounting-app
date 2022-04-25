@@ -11,6 +11,12 @@ var uiController = (function () {
         expense_list: ".expenses__list",
         delete_btn: ".item__delete--btn"
     };
+    // SMALL PERCENTAGE 
+    var smallPercent_nodeList_foreach = function(list, callbackFun){
+        for (let i = 0; i < list.length; i++) {
+                callbackFun(list[i], i);
+        }
+    };
     // PUBLIC SERVICE OF ui-CONTROLLER 
     return {
         uiPublic: function () {
@@ -31,7 +37,7 @@ var uiController = (function () {
             } else {
                 list = domClasses.expense_list;
                                     
-                dom = '<div class="item clearfix" id="exp-$$ID$$"><div class="item__description">$$DESCRIPTION$$</div><div class="right clearfix"><div class="item__value">$$VALUE$$</div><div class="item__delete"><div class="budget__expenses--percentage">0%</div><button class="item__delete--btn"><i class="fa fa-close""></i></button></div></div></div>'
+                dom = '<div class="item clearfix" id="exp-$$ID$$"><div class="item__description">$$DESCRIPTION$$</div><div class="right clearfix"><div class="item__value">$$VALUE$$</div><div class="item__delete"><div class="item__percentage">21%</div><button class="item__delete--btn"><i class="fa fa-close""></i></button></div></div></div>'
             }
             dom = dom.replace("$$ID$$", items.id);
             dom = dom.replace("$$DESCRIPTION$$", items.description);
@@ -54,6 +60,13 @@ var uiController = (function () {
             });
             // after enter the data users crusor focus on first input
             newArray_input[0].focus()
+        },
+        // SMALL PERCENTAGE
+        display_small_percentage: function(per){
+            var dotNote = document.querySelectorAll(".item__percentage");
+            smallPercent_nodeList_foreach(dotNote, function(el, index){
+                el.textContent = per[index];
+            });
         },
         // displaying function
         display_data: function (est) {
@@ -100,6 +113,19 @@ var finController = (function () {
         this.id = id;
         this.description = description;
         this.value = value;
+        this.percent = -1;
+    }
+    // SMALL PERCENTAGE PART IN INDIVITUAL EXPENSE ITEMS
+    Expense.prototype.calculate_indivitual_percent = function(total_Income){
+        if(total_Income > 0){
+            this.percent = Math.round((this.value / total_Income)*100);
+        }else{
+            this.percent = 0;
+        }
+    };
+    // RETURN INDIVITUAL EXPENSE PERCENTAGE
+    Expense.prototype.get_indivitual_percent = function(){
+        return this.percent;
     }
     // need to save data from user to massive // array
     // var inc_Data = [];
@@ -123,7 +149,6 @@ var finController = (function () {
 
     // all_User_Data.data.inc_Data.push(i1)
     // all_User_Data.data.exp_Data.push(e1)
-    // console.log(all_User_Data);
 
     // PUBKIC SERVICE FUNCTION OF FINCANCE CONTROLLER
     return {
@@ -145,10 +170,7 @@ var finController = (function () {
 
             return items;
         },
-        // seeing datafor temperory
-        // see: function () {
-        //     return all_User_Data;
-        // },
+
         // calculating values
         calculation: function (type) {
             var sum = 0;
@@ -168,6 +190,21 @@ var finController = (function () {
             }
             
         },
+
+        // SMALL PERCENTAGE CALCULATION
+        definde_Indivitual_percent: function(){
+            all_User_Data.data.exp.forEach(function(el){
+                el.calculate_indivitual_percent(all_User_Data.total.inc)
+            })
+        },
+        // SMALL PERCENTAGE CALCULATION
+        return_indivitual_percent: function(){
+            var allpercents = all_User_Data.data.exp.map(function(el){
+                return el.get_indivitual_percent();
+            })
+            return allpercents;
+        },
+
         // returning all calculated data to dom
         return_calculation: function () {
             return {
@@ -194,9 +231,9 @@ var finController = (function () {
 
         },
         // showing data for temperory
-        // showData : function(){
-        //     return all_User_Data;
-        // }
+        showData : function(){
+            return all_User_Data;
+        }
     }
 
 
@@ -225,6 +262,8 @@ var conController = (function (ui, fin) {
             ui.input_clear();
             // To recaluclate after delete item from the list
             re_calculate();
+            // showing data for temperory
+            fin.showData()
 
         }
       
@@ -239,9 +278,6 @@ var conController = (function (ui, fin) {
         // var xxx = fin.delete_items(d.type, returned_Item.id);
         // console.log(xxx);
         // ui.raseIt();
-        
-        // showing data for temperory
-        // fin.showData()
       
     };
 
@@ -255,6 +291,14 @@ var conController = (function (ui, fin) {
         // console.log(estimation);
         // 6. DOM function
         ui.display_data(estimation);
+
+        // SMALL PERCENTAGE CALCULATION
+        fin.definde_Indivitual_percent();
+        // SMALL PERCENTAGE CALCULATION
+        var xxx = fin.return_indivitual_percent();
+        console.log(xxx);
+        // SMALL PERCENTAGE display function to call
+        ui.display_small_percentage(xxx)
    }
     
     // local/hiden function
