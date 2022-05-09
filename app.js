@@ -65,7 +65,7 @@ var uiController = (function () {
         display_small_percentage: function(per){
             var dotNote = document.querySelectorAll(".item__percentage");
             smallPercent_nodeList_foreach(dotNote, function(el, index){
-                el.textContent = per[index];
+                el.textContent = per[index] + "%";
             });
         },
         // displaying function
@@ -188,6 +188,10 @@ var finController = (function () {
             // percentage estimation
             all_User_Data.percentage = Math.round((all_User_Data.total.exp / all_User_Data.total.inc) * 100)
             }
+            else{
+                // console.log("Do you see this");
+                all_User_Data.percentage = 0;
+            }
             
         },
 
@@ -288,7 +292,7 @@ var conController = (function (ui, fin) {
         fin.calculation(inputVal.type);
         // 5. Those estimated data to preparing to DOM
         var estimation = fin.return_calculation();
-        // console.log(estimation);
+        // console.log(estimation.all_percentage);
         // 6. DOM function
         ui.display_data(estimation);
 
@@ -297,7 +301,7 @@ var conController = (function (ui, fin) {
         // SMALL PERCENTAGE CALCULATION
         var xxx = fin.return_indivitual_percent();
         console.log(xxx);
-        // SMALL PERCENTAGE display function to call
+        // SMALL PERCENTAGE display function to c
         ui.display_small_percentage(xxx)
    }
     
