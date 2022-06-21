@@ -19,6 +19,42 @@ var uiController = (function () {
     };
     // PUBLIC SERVICE OF ui-CONTROLLER 
     return {
+        // show the date function
+        display_date : function(){
+            var date = new Date();
+            // console.log(date.getFullYear());
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            switch (month) {
+                case 1: month = "Jan"
+                    break;
+                case 2: month = "Feb"
+                    break;
+                case 3: month = "March"
+                    break;
+                case 4: month = "April"
+                    break;
+                case 5: month = "May"
+                    break;
+                case 6: month = "June"
+                    break;
+                case 7: month = "July"
+                    break;
+                case 8: month = "Aug"
+                    break;
+                case 9: month = "Sep"
+                    break;
+                case 10: month = "Oct"
+                    break;
+                case 11: month = "Nov"
+                    break;
+                case 12: month = "Dec"
+                default:
+                    break;
+            }
+            // var week = date.getTime();
+            document.querySelector(".budget__title--month").textContent = month + " / " + year;
+        },
         uiPublic: function () {
             return {
                 type: document.querySelector(domClasses.add_type).value,
@@ -70,6 +106,36 @@ var uiController = (function () {
         },
         // displaying function
         display_data: function (est) {
+            console.log(est.all_inc);
+
+            var strnNum = "" + est.all_inc;
+            var x = strnNum.split("").reverse().join("");
+            // console.log(x);
+
+            var saverStrn = "";
+            var count = 1;
+            
+            for(let i = 0; i < x.length; i++){
+                saverStrn = saverStrn + x[i];
+                // console.log(saverStrn, i);
+                if(count % 3 === 0)
+                    saverStrn = saverStrn + "'";
+                    count ++
+                
+            };
+            console.log(saverStrn)
+
+            var y = saverStrn.split("").reverse().join("");
+            console.log(y)
+            if(y[0] === "'")
+            y = y.substring(1, y.length);
+            console.log(y)
+
+           
+
+
+
+
             document.querySelector(".budget__value").textContent = est.all_net
             document.querySelector(".budget__income--value").textContent = est.all_inc
             document.querySelector(".budget__expenses--value").textContent = est.all_exp
@@ -191,8 +257,8 @@ var finController = (function () {
             else{
                 // console.log("Do you see this");
                 all_User_Data.percentage = 0;
-            }
-            
+            };
+
         },
 
         // SMALL PERCENTAGE CALCULATION
@@ -300,7 +366,7 @@ var conController = (function (ui, fin) {
         fin.definde_Indivitual_percent();
         // SMALL PERCENTAGE CALCULATION
         var xxx = fin.return_indivitual_percent();
-        console.log(xxx);
+        // console.log(xxx);
         // SMALL PERCENTAGE display function to c
         ui.display_small_percentage(xxx)
    }
@@ -344,6 +410,9 @@ var conController = (function (ui, fin) {
     // PUBLIC SERVICE OF conCONNECTION CONTROLLER 
     return {
         conPublic: function () {
+            // to show date function
+            ui.display_date();
+
             console.log("App starting......");
             letStartApp();
         }
