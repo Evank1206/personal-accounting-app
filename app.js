@@ -9,13 +9,47 @@ var uiController = (function () {
         addBTN: ".add__btn",
         income_list: ".income__list",
         expense_list: ".expenses__list",
-        delete_btn: ".item__delete--btn"
+        delete_btn: ".item__delete--btn",
+        budget__value: ".budget__value",
+        budget__income__value : ".budget__income--value",
+        budget__expenses__value : ".budget__expenses--value"
     };
     // SMALL PERCENTAGE 
     var smallPercent_nodeList_foreach = function(list, callbackFun){
         for (let i = 0; i < list.length; i++) {
                 callbackFun(list[i], i);
         }
+    };
+    // TO SORT NUMBER BY DIGITS " ' "
+    var sort_digit = function(num, type){
+                // Number to String
+                var strnNum = "" + num;
+                // example: "123" ---> "321" 
+                var x = strnNum.split("").reverse().join("");
+                // to keep sorted number to in string
+                var saverStrn = "";
+                // increment counter
+                var count = 1;
+                // to loop through the string of number AND to split by 3 digit & to give "'"
+                for(let i = 0; i < x.length; i++){
+                    saverStrn = saverStrn + x[i];
+                    if(count % 3 === 0)
+                        saverStrn = saverStrn + "'";
+                        count ++;
+                };
+                // console.log(saverStrn);
+                // to reverse the grounded string of number
+                var y = saverStrn.split("").reverse().join("");
+                // console.log(y)
+                // to erase the "'"! if access in front of number
+                if(y[0] === "'") y = y.substring(1, y.length);
+                // console.log(y)
+                // to apply + OR - sign front of numbers defense on inc or exp
+                if(type === "inc") y = "+" + y;
+                else y = "-" + y;
+                // To return final grounded digits
+                return y;
+    
     };
     // PUBLIC SERVICE OF ui-CONTROLLER 
     return {
@@ -75,9 +109,10 @@ var uiController = (function () {
                                     
                 dom = '<div class="item clearfix" id="exp-$$ID$$"><div class="item__description">$$DESCRIPTION$$</div><div class="right clearfix"><div class="item__value">$$VALUE$$</div><div class="item__delete"><div class="item__percentage">21%</div><button class="item__delete--btn"><i class="fa fa-close""></i></button></div></div></div>'
             }
+
             dom = dom.replace("$$ID$$", items.id);
             dom = dom.replace("$$DESCRIPTION$$", items.description);
-            dom = dom.replace("$$VALUE$$", items.value);
+            dom = dom.replace("$$VALUE$$", sort_digit(items.value, type));
 
             document.querySelector(list).insertAdjacentHTML("beforeend", dom);
         },
@@ -106,39 +141,15 @@ var uiController = (function () {
         },
         // displaying function
         display_data: function (est) {
-            console.log(est.all_inc);
-
-            var strnNum = "" + est.all_inc;
-            var x = strnNum.split("").reverse().join("");
-            // console.log(x);
-
-            var saverStrn = "";
-            var count = 1;
-            
-            for(let i = 0; i < x.length; i++){
-                saverStrn = saverStrn + x[i];
-                // console.log(saverStrn, i);
-                if(count % 3 === 0)
-                    saverStrn = saverStrn + "'";
-                    count ++
-                
-            };
-            console.log(saverStrn)
-
-            var y = saverStrn.split("").reverse().join("");
-            console.log(y)
-            if(y[0] === "'")
-            y = y.substring(1, y.length);
-            console.log(y)
-
-           
-
-
-
-
-            document.querySelector(".budget__value").textContent = est.all_net
-            document.querySelector(".budget__income--value").textContent = est.all_inc
-            document.querySelector(".budget__expenses--value").textContent = est.all_exp
+            // console.log(est.all_inc);
+            // to check condition of inc OR exp
+            var type;
+            if(est.all_inc > 0) type = "inc";
+            else type = "exp";
+            // to display data
+            document.querySelector(domClasses.budget__value).textContent = sort_digit(est.all_net, type);
+            document.querySelector(domClasses.budget__income__value).textContent = sort_digit(est.all_inc, "inc");
+            document.querySelector(domClasses.budget__expenses__value).textContent = sort_digit(est.all_exp, "exp");
             // conditional check: if there is not any % amount "%" sign shouldn't appear 
             if (est.all_percentage !== 0) {
                 document.querySelector(".budget__expenses--percentage").textContent = est.all_percentage + "%"
@@ -361,6 +372,10 @@ var conController = (function (ui, fin) {
         // console.log(estimation.all_percentage);
         // 6. DOM function
         ui.display_data(estimation);
+        //  sort by digit
+        // var a = ui.sort_digit(inputVal.type,estimation);                                              //  w o r k i n g   on
+        // console.log(a);
+
 
         // SMALL PERCENTAGE CALCULATION
         fin.definde_Indivitual_percent();
