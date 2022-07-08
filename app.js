@@ -12,7 +12,10 @@ var uiController = (function () {
         delete_btn: ".item__delete--btn",
         budget__value: ".budget__value",
         budget__income__value : ".budget__income--value",
-        budget__expenses__value : ".budget__expenses--value"
+        budget__expenses__value : ".budget__expenses--value",
+        budget__expenses__percentage : ".budget__expenses--percentage",
+        budget__expenses__percentage : ".budget__expenses--percentage",
+        item__percentage : ".item__percentage",
     };
     // SMALL PERCENTAGE 
     var smallPercent_nodeList_foreach = function(list, callbackFun){
@@ -116,6 +119,10 @@ var uiController = (function () {
 
             document.querySelector(list).insertAdjacentHTML("beforeend", dom);
         },
+        // change color of button
+        change_btnColor: function(){
+            document.querySelector(domClasses.addBTN).classList.toggle("red")
+        },
         // clearing input // resset input 
         input_clear: function () {
             var clearfiled = document.querySelectorAll(domClasses.add__description + "," + domClasses.add__value);
@@ -134,7 +141,7 @@ var uiController = (function () {
         },
         // SMALL PERCENTAGE
         display_small_percentage: function(per){
-            var dotNote = document.querySelectorAll(".item__percentage");
+            var dotNote = document.querySelectorAll(domClasses.item__percentage);
             smallPercent_nodeList_foreach(dotNote, function(el, index){
                 el.textContent = per[index] + "%";
             });
@@ -146,15 +153,18 @@ var uiController = (function () {
             var type;
             if(est.all_inc > 0) type = "inc";
             else type = "exp";
+            // color
+            // if(type === "inc") 
+            // document.querySelector(domClasses.add__description).style.backgroundColor = "blue";
             // to display data
             document.querySelector(domClasses.budget__value).textContent = sort_digit(est.all_net, type);
             document.querySelector(domClasses.budget__income__value).textContent = sort_digit(est.all_inc, "inc");
             document.querySelector(domClasses.budget__expenses__value).textContent = sort_digit(est.all_exp, "exp");
             // conditional check: if there is not any % amount "%" sign shouldn't appear 
             if (est.all_percentage !== 0) {
-                document.querySelector(".budget__expenses--percentage").textContent = est.all_percentage + "%"
+                document.querySelector(domClasses.budget__expenses__percentage).textContent = est.all_percentage + "%"
             } else {
-                document.querySelector(".budget__expenses--percentage").textContent = est.all_percentage;
+                document.querySelector(domClasses.budget__expenses__percentage).textContent = est.all_percentage;
             }
 
         },
@@ -367,13 +377,14 @@ var conController = (function (ui, fin) {
         var inputVal = ui.uiPublic();
         // 4. Calculate fincance (income, expense, available balance & percentage)
         fin.calculation(inputVal.type);
+        // if(inputVal.type === "inc") console.log("yes");                                                     //  w o r k i n g   on
         // 5. Those estimated data to preparing to DOM
         var estimation = fin.return_calculation();
         // console.log(estimation.all_percentage);
         // 6. DOM function
         ui.display_data(estimation);
         //  sort by digit
-        // var a = ui.sort_digit(inputVal.type,estimation);                                              //  w o r k i n g   on
+        // var a = ui.sort_digit(inputVal.type,estimation);
         // console.log(a);
 
 
@@ -394,7 +405,8 @@ var conController = (function (ui, fin) {
         document.querySelector(DOM.addBTN).addEventListener("click", function () {
             enterfunction();
         });
-
+        // change btn color
+        document.querySelector(DOM.add_type).addEventListener("change", ui.change_btnColor);
         // when press the enter keyboard
         document.addEventListener("keypress", function (event) {
             if (event.keyCode === 13) {
